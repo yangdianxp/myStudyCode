@@ -1,0 +1,12 @@
+git命令：
+git push -u origin dev
+git remote add origin git@github.com:yangdianxp/mygit.git
+git checkout -b dev
+git branch
+git add readme.txt
+git commit -m "branch test"
+git checkout master
+git merge dev
+git branch -d dev
+git log --graph --pretty=oneline --abbrev-commit
+git clone address
