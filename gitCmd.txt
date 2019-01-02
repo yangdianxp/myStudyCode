@@ -12,9 +12,15 @@ git log --graph --pretty=oneline --abbrev-commit
 git clone address
 git status //确定哪些文件当前处于什么状态
 git diff //查看具体修改，比较工作目录中当前文件和暂存区域快照之间的差异
-git diff --cached  git diff --staged
-//已经暂存起来的文件和上次提交时的快照之间的差异
-
+git diff --cached  git diff --staged //已经暂存起来的文件和上次提交时的快照之间的差异
+git commit -a  // 自动把所有已经跟踪过的文件暂存起来一并提交
+git rm //从已跟踪文件清单中移除，并连带从工作目录中删除指定的文件。
+git rm --cached readme.txt //从git仓库中删除，但仍保留在当前工作目录中
+git rm log/\*.log  //不递归匹配
+git rm \*~ //递归匹配
+git mv file_from file_to //对文件改名
+git log //查看提交历史
+git log -p -2 //-p 选项展开显示每次提交的内容差异，用 -2 则仅显示最近的两次更新 --word-diff单词层面的对比 -U1更改上下文行数 --stat仅显示简要的增改行数据统计
 
 
 cat .gitignore
