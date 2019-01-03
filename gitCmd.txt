@@ -1,10 +1,15 @@
 git命令：
+git push [remote-name] [branch-name]  //本地仓库中的数据推送到远程仓库
+git push origin master
 git push -u origin dev
 git remote add origin git@github.com:yangdianxp/mygit.git
 git remote  //列出每个远程库的简短名字
 git remote -v //显示远程库的地址
 git remote add [shortname] [url]  //
 git remote add pb git://github.com/paulboone/ticgit.git //添加一个新的远程仓库
+git remote show [remote-name]  //查看某个远程仓库的详细信息
+git remote rename //修改某个远程仓库在本地的简称
+git remote rm  //删除远程仓库
 git fetch [remote-name]
 git fetch pb //抓取所有 Paul 有的，但本地仓库没有的信息
 git fetch origin //抓取远程仓库中的所有更新，只是将远端的数据接到本地仓库，并不自动合并到当前工作分支，要手工合并
@@ -78,6 +83,9 @@ git log --pretty="%h - %s" --author=gitster --since="2008-10-01" --before="2008-
 
 gitk  //启动图形化界面，查看历史提交
 
+git tag  //列出现有标签的
+
+git branch testing  //创建一个新的分支指针
 
 
 cat .gitignore
