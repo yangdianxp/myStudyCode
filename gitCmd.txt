@@ -8,6 +8,7 @@ git remote -v //显示远程库的地址
 git remote add [shortname] [url]  //
 git remote add pb git://github.com/paulboone/ticgit.git //添加一个新的远程仓库
 git remote show [remote-name]  //查看某个远程仓库的详细信息
+git ls-remote (remote) //来显式地获得远程引用的完整列表
 git remote rename //修改某个远程仓库在本地的简称
 git remote rm  //删除远程仓库
 git fetch [remote-name]
@@ -26,6 +27,7 @@ git merge dev
 git branch -d dev
 git log --graph --pretty=oneline --abbrev-commit
 git clone address
+git clone -o booyah //默认的远程分支名字将会是 booyah/master
 git status //确定哪些文件当前处于什么状态
 git diff //查看具体修改，比较工作目录中当前文件和暂存区域快照之间的差异
 git diff --cached  git diff --staged //已经暂存起来的文件和上次提交时的快照之间的差异
@@ -86,6 +88,9 @@ gitk  //启动图形化界面，查看历史提交
 git tag  //列出现有标签的
 
 git branch  //列出当前所有分支的清单
+git branch -v //查看每一个分支的最后一次提交
+git branch --merged //查看哪些分支已经合并到当前分支
+git branch --no-merged //查看所有包含未合并工作的分支
 git branch testing  //创建一个新的分支指针
 git checkout testing  //切换分支
 git checkout -b testing  //新建并切换到分支
