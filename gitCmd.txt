@@ -90,6 +90,7 @@ git checkout testing  //切换分支
 git checkout -b testing  //新建并切换到分支
 git checkout master
 git merge testing   //切换到master分支，合并testing到master分支
+git branch -d testing //删除分支
 
 cat .gitignore
 *.[oa]
