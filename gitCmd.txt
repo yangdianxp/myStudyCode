@@ -1,11 +1,22 @@
 git命令：
 git push -u origin dev
 git remote add origin git@github.com:yangdianxp/mygit.git
+git remote  //列出每个远程库的简短名字
+git remote -v //显示远程库的地址
+git remote add [shortname] [url]  //
+git remote add pb git://github.com/paulboone/ticgit.git //添加一个新的远程仓库
+git fetch [remote-name]
+git fetch pb //抓取所有 Paul 有的，但本地仓库没有的信息
+git fetch origin //抓取远程仓库中的所有更新，只是将远端的数据接到本地仓库，并不自动合并到当前工作分支，要手工合并
+git pull  //从原始克隆的远端仓库中抓取数据后，合并到工作目录中的当前分支
 git checkout -b dev
 git branch
 git add readme.txt  //把文件放入暂存区
 git commit -m "branch test"  //git commit -v 将修改差异的每一行都包含到注释中来
+git commit --amend  //撤消提交 此命令将使用当前的暂存区域快照提交。
+git reset HEAD benchmarks.rb  //取消暂存
 git checkout master
+git checkout -- benchmarks.rb //取消对文件的修改
 git merge dev
 git branch -d dev
 git log --graph --pretty=oneline --abbrev-commit
@@ -52,6 +63,20 @@ git log --pretty=format:"%h - %an, %ar : %s"
 --oneline	--pretty=oneline --abbrev-commit 的简化用法。
 --since 和 --until  按时间做限制  git log --since=2.weeks //最近两周的提交 （“2008-01-15”），或者是多久以前（“2 years 1 day 3 minutes ago”）。
 
+还可以给出若干搜索条件，列出符合的提交。用 --author 选项显示指定作者的提交，用 --grep 选项搜索提交说明中的关键字。（请注意，如果要得到同时满足这两个选项搜索条件的提交，就必须用 --all-match 选项。否则，满足任意一个条件的提交都会被匹配出来）
+
+git log path //查询某个文件或目录的历史提交
+
+-(n)	仅显示最近的 n 条提交
+--since, --after	仅显示指定时间之后的提交。
+--until, --before	仅显示指定时间之前的提交。
+--author	仅显示指定作者相关的提交。
+--committer	仅显示指定提交者相关的提交。
+
+实际的例子，如果要查看 Git 仓库中，2008 年 10 月期间，Junio Hamano 提交的但未合并的测试脚本（位于项目的 t/ 目录下的文件），可以用下面的查询命令：
+git log --pretty="%h - %s" --author=gitster --since="2008-10-01" --before="2008-11-01" --no-merges -- t/
+
+gitk  //启动图形化界面，查看历史提交
 
 
 
