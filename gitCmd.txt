@@ -2,7 +2,8 @@ git命令：
 git push [remote-name] [branch-name]  //本地仓库中的数据推送到远程仓库
 git push origin master
 git push -u origin dev
-git remote add origin git@github.com:yangdianxp/mygit.git
+git push [remote] --all //推送所有分支到远程仓库
+git regit push [remote] --allmote add origin git@github.com:yangdianxp/mygit.git
 git remote  //列出每个远程库的简短名字
 git remote -v //显示远程库的地址
 git remote add [shortname] [url]  //
