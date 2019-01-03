@@ -85,12 +85,15 @@ gitk  //启动图形化界面，查看历史提交
 
 git tag  //列出现有标签的
 
+git branch  //列出当前所有分支的清单
 git branch testing  //创建一个新的分支指针
 git checkout testing  //切换分支
 git checkout -b testing  //新建并切换到分支
 git checkout master
-git merge testing   //切换到master分支，合并testing到master分支
+git merge testing   //切换到master分支，合并testing到master分支，如何合并有冲突，冲突解决之后，要用git add重新加入到暂存区
 git branch -d testing //删除分支
+git mergetool //调用一个可视化的合并工具并引导你解决所有冲突
+
 
 cat .gitignore
 *.[oa]
