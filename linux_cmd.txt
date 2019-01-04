@@ -1,1 +1,125 @@
 grep命令：
+grep leo logs.log logs_back.log   //多文件查询
+grep leo logs.log | grep li   //查找即包含leo又包含li的行
+grep leo | li logs.log //查找匹配leo或者匹配li的行
+grep leo logs.log -A2 //显示匹配行后2行
+grep leo logs.log -C2 //显示匹配行前后2行
+grep -i leo logs.log //不区分大小写
+grep -e '[a-z]\{5\}' logs.log //使用正则表达式, a-z任意一个字符出现5次
+grep -v leo logs.log //查找不包含leo的行
+grep -c leo logs.log //统计包含leo的行数
+grep -r leo . //遍历当前目录及所有子目录查找匹配leo的行
+grep -r leo . --include "*.java"  //在当前目录及所有子目录查找所有java文件中查找leo
+grep leo logs.log > result.log //查找并输出到指定文件
+grep ^leo logs.log //查找以leo开头的行
+grep leo$ logs.log //查找以leo结尾的行
+grep ^$ logs.log //查找空行
+
+grep [OPTIONS] PATTERN [FILE...]
+    grep [OPTIONS] [-e PATTERN]...  [-f FILE]...  [FILE...]
+
+    OPTIONS:
+    -e: 使用正则搜索
+    -i: 不区分大小写
+    -v: 查找不包含指定内容的行
+    -w: 按单词搜索
+    -c: 统计匹配到的次数
+    -n: 显示行号
+    -r: 逐层遍历目录查找
+	-s或--no-messages   不显示错误信息
+	-x或--line-regexp   只显示全列符合的列。
+    -A: 显示匹配行及前面多少行, 如: -A3, 则表示显示匹配行及前3行
+    -B: 显示匹配行及后面多少行, 如: -B3, 则表示显示匹配行及后3行
+    -C: 显示匹配行前后多少行,   如: -C3, 则表示显示批量行前后3行
+    --color: 匹配到的内容高亮显示
+    --include: 指定匹配的文件类型
+    --exclude: 过滤不需要匹配的文件类型
+	
+find命令：
+ -name "文件名称"：支持使用glob
+            *, ?, [], [^]
+-user USERNAME：查找属主为指定用户(UID)的文件
+        -group GRPNAME: 查找属组为指定组(GID)的文件
+        -uidUserID：查找属主为指定的UID号的文件
+        -gidGroupID：查找属组为指定的GID号的文件
+        -nouser：查找没有属主的文件
+        -nogroup：查找没有属组的文件
+ -type TYPE:
+            f: 普通文件
+            d: 目录文件
+            l: 符号链接文件
+            s：套接字文件
+            b: 块设备文件
+            c: 字符设备文件
+            p: 管道文件 
+根据文件大小来查找：
+        -size [+|-]#UNIT
+            常用单位：k, M, G
+            #UNIT: (#-1, #]，如：6k
+            -#UNIT：[0,#-1], 如：-6k
+            +#UNIT：(#,∞), 如：+6k
+根据时间戳：
+        -atime[+|-]#,
+            #: [#,#+1)
+            +#: [#+1,∞]
+            -#: [0,#)
+        -mtime //以“天”为单位；
+        -ctime//以“天”为单位；
+        -amin//以“分钟”为单位：
+        -mmin以“分钟”为单位：
+        -cmin以“分钟”为单位：
+根据权限查找
+        -perm [/|-]MODE
+        MODE: 精确权限匹配
+        /MODE：任何一类(u,g,o)对象的权限中只要能一位匹配即可，或关系，+ 从centos7开始淘汰
+        -MODE：每一类对象都必须同时拥有指定权限，与关系
+        0 表示不关注
+与：-a
+或：-o
+非：-not, !
+处理动作
+    -print：默认的处理动作，显示至屏幕；
+    -ls：类似于对查找到的文件执行“ls -l”命令
+    -delete：删除查找到的文件；
+    -flsfile：查找到的所有文件的长格式信息保存至指定文件中
+    -ok COMMAND {} \; 对查找到的每个文件执行由COMMAND指定的命令；
+        对于每个文件执行命令之前，都会交互式要求用户确认    
+
+    -exec COMMAND {} \; 对查找到的每个文件执行由COMMAND指定的命令
+        {}: 用于引用查找到的文件名称自身
+
+find . -name "*.c" //将目前目录及其子目录下所有延伸档名是 c 的文件列出来。
+find . -type f //将目前目录其其下子目录中所有一般文件列出
+find . -ctime -20 //将目前目录及其子目录下所有最近 20 天内更新过的文件列出
+find /var/log -type f -mtime +7 -ok rm {} \; //查找/var/log目录中更改时间在7日以前的普通文件，并在删除之前询问它们：
+find . -type f -perm 644 -exec ls -l {} \; //查找前目录中文件属主具有读、写权限，并且文件所属组的用户和其他用户具有读权限的文件
+find / -type f -size 0 -exec ls -l {} \; //查找系统中所有文件长度为0的普通文件，并列出它们的完整路径
+find -size -2k //查找当前目录下文件大小小与2k的文件
+find /var -not -user root -not -user lp -not -user gdm|wc -l //表示查找属主不是root，lp，gdm的文件或目录
+
+netstat命令：
+netstat -a  //列出所有当前的连接
+netstat -at //使用 -t 选项列出 TCP 协议的连接
+netstat -au //使用 -u 选项列出 UDP 协议的连接
+netstat -ant //使用 -n 选项禁用域名解析功能
+netstat -tnl //使用 -l 选项列出正在监听的套接字
+netstat -nlpt //使用 -p 选项查看进程信息，查看进程名和进程号
+netstat -ltpe //使用 -ep 选项可以同时查看进程名和用户名，假如你将 -n 和 -e 选项一起使用，User 列的属性就是用户的 ID 号，而不是用户名
+netstat -s //打印出网络统计数据，包括某个协议下的收发包数量
+netstat -rn //使用 -r 选项打印内核路由信息。打印出来的信息与 route 命令输出的信息一样。我们也可以使用 -n 选项禁止域名解析。
+netstat -i //-i选项打印网络接口信息
+netstat -ie //将 -e 选项和 -i 选项搭配使用，显示更详细的网络接口信息
+netstat -ct //-c 选项持续输出信息
+netstat -g //选项 -g 会输出 IPv4 和 IPv6 的多播组信息
+
+
+
+
+
+
+
+
+
+
+
+
