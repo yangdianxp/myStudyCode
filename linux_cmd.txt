@@ -168,8 +168,21 @@ break filename:linenum 在源文件filename的linenum行处停住
 break filename:function 在源文件filename的function函数的入口处停住
 break class::function或function(type,type) 在类class的function函数的入口处停住
 break namespace::class::function在名称空间为namespace的类class的function函数的入口处停住
+
 break linespec thread threadno
 break linespec thread threadno if …  //linespec指定了断点设置在的源程序的行号。threadno指定了线程的ID，注意，这个ID是GDB分配的，你可以通过“info threads”命令来查看正在运行程序中的线程信息。如果你不指定‘thread threadno ’则表示你的断点设在所有线程上面。你还可以为某线程指定断点条件。如
+info threads
+thread ID 来切换
+set scheduler-locking off|on|step 估计实际使用过多线程调试的人都可以发现，
+在使用step或者continue命令调试当前被调试线程的时候，其他线程也是同时执行的，
+怎么只让被调试程序执行呢？通过这个命令就可以实现这个需求。
+off 不锁定任何线程，也就是所有线程都执行，这是默认值。 
+on 只有当前被调试程序会执行。 
+设置 on 之后， step 在单步的时候， 只有当前线程会执行。
+
+set follow-fork-mode parent 跟踪父进程, 默认
+set follow-fork-mode child  跟踪子进程
+
 info b //查询所有断点
 watch 为表达式（变量）expr设置一个观察点。当表达式值有变化时，马上停住程序。
 rwatch 表达式（变量）expr被读时，停住程序。
@@ -201,6 +214,7 @@ next 单步跟踪，函数调用当作一条简单语句执行，可简写为n
 step 单步跟踪，函数调进入被调用函数体内，可简写为s
 finish 退出函数
 until 在一个循环体内单步跟踪时，这个命令可以运行程序直到退出循环体,可简写为u。
+fin: step out， 跳出函数
 continue 继续运行程序，可简写为c
 stepi或si, nexti或ni 单步跟踪一条机器指令,一条程序代码有可能由数条机器指令完成，stepi和nexti可以单步执行机器指令
 info program 来查看程序的是否在运行，进程号，被暂停的原因。
@@ -249,6 +263,10 @@ catch //当event发生时，停住程序。event可以是下面的内容：
 1、throw 一个C++抛出的异常。（throw为关键字） 
 2、catch 一个C++捕捉到的异常。（catch为关键字）
 
+默认编译的时候，调试过程是看不见宏的值的。编译时候需要给选项。-g3
+gcc  -g3 -o test.c  test
+macro expand macroname(...) 查看展开形式
+还可以用info macro macroname 查看宏定义。
 
 layout：用于分割窗口，可以一边查看代码，一边测试。主要有以下几种用法：
 layout src：显示源代码窗口
