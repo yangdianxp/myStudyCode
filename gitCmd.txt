@@ -100,6 +100,7 @@ git tag  //列出现有标签的
 
 git branch  //列出当前所有分支的清单
 git branch -v //查看每一个分支的最后一次提交
+git branch -a //查看所有分支
 git branch --merged //查看哪些分支已经合并到当前分支
 git branch --no-merged //查看所有包含未合并工作的分支
 git branch testing  //创建一个新的分支指针
@@ -108,6 +109,7 @@ git checkout -b testing  //新建并切换到分支
 git checkout master
 git merge testing   //切换到master分支，合并testing到master分支，如何合并有冲突，冲突解决之后，要用git add重新加入到暂存区
 git branch -d testing //删除分支
+git push origin --delete Chapater6 //删除远程分支Chapater6 
 git mergetool //调用一个可视化的合并工具并引导你解决所有冲突
 
 
