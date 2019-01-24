@@ -157,23 +157,85 @@ select class_id, gender, count(*), group_concat(stu_name) from my_student group 
 select class_id, count(*) from my_student group by class_id with rollup;
 select class_id, gender, count(*) from my_student group by class_id, gender with rollup;
 
+having子句
+having的本质和where一样，是用来进行数据条件筛选。
+having是在group by子句之后，可以针对分组数据进行统计，但是where不行。
+where不能使用聚合函数：聚合函数是用在group by分组的时候，where已经运行完毕。
+having 在group by分组之后，可以使用聚合函数或者字段别名（where是从表中取出数据，别名是在数据进入到内存之后才有的）
+create table my_student (std_id varchar(10), stu_name varchar(10), class_id tinyint, stu_age tinyint, stu_height tinyint, gender enum('男', '女', '保密')) charset=gbk;
+alter table my_student change stu_height stu_height tinyint unsigned;
+insert into my_student values('stu0007', '小江', 1, 25, 178, 2);
+select class_id, count(*) as number from my_student group by class_id having number >= 4;
+强调：having是在group by之后，group by是在where之后，where的时候表示将数据从磁盘拿到内存，where之后的所有操作都是内存操作。
 
+order by排序：根据校对规则对数据进行排序
+基本语法：order by 字段 [asc|desc] //asc升序 desc降序
+select * from my_student order by stu_height asc;
+order by也可以像group by一新进行多字段排序：先按照第一个字段进行排序，然后再按照第二个字段进行排序。
+order by 字段1 规则，字段2 规则 
+-- 按照班级以及身高排序
+select * from my_student order by class_id desc, stu_height;
 
+limit子句
+limit限制子句：主要是用来限制记录数量获取
+记录数限制
+纯粹的限制获取的数量，从第一条到指定的数量
+基本语法：limit 数量;
+select * from my_student limit 2;
+limit通常在查询的时候如果限定为一条记录的时候，使用的比较多：有时候获取多条记录并不能解决业务问题，但是会增加服务器的压力。
 
+分页
+利用limit来限制获取指定区间的数据
+基本语法：limit offset length; //offset偏移量：从哪开始，length就是具体的获取多少条记录
+mysql中记录的数量从0开始
+limit 0,2;表示获取前两条记录。
+-- 分页获取数据
+select * from my_student limit 1, 2;
+注意：limit后面的length表示最多获取对应数量，但是如果数量不够，系统不会强求。
 
+查询中的运算符
+算术运算符
++、-、*、/、%
+基本算术运算：通常不在条件中使用，而是用于结果运算(select 字段中)
+create table ysf1(int_1 int, int_2 int, int_3 int, int_4 int)charset utf8;
+insert into ysf1 values(100, -100, 0, default);
+-- 算术运算
+select int_1 + int_2, int_1 - int_2, int_1 * int_2, int_1 / int_2, int_2 / int_3, int_2 % 6, int_4 % 5 from ysf1;
 
+比较运算符
+> >= < <= = <>
+通常是用来在条件中进行限定结果
+=：在mysql中，没有对应==比较符号，就是使用=来进行相等判断
+<=>:相等比较
+特殊应用：就是在字段结果中进行比较运算
+mysql中没有规定select必须有数据表
+select '1' <=> 1, 0.02 <=> 0;
+在条件判断的时候，还有对应比较运算符：计算区间
+select * from my_student where stu_age between 20 and 30;
+between中条件1必须小于条件2，反过来不可以
 
+逻辑运算符
+and or not
+and:逻辑与
+or:逻辑或
+not:逻辑非
+select * from my_student where stu_age >= 20 and stu_age <= 30;
 
+in运算符
+in:在什么里面，是用来替代=，当结果不是一个值，而是一个结果集的时候
+基本语法：in（结果1， 结果2，结果3.。。），只要当前条件在结果集中出现过，那么就成立
+select * from my_student where std_id in ('stu0001', 'stu0004', 'stu0007');
 
+is运算符
+is是专门用来判断字段是否为NULL的运算符
+基本语法：is null/is not null
+select * from my_int where int_6 is null;
 
-
-
-
-
-
-
-
-
-
-
+like运算符
+like运算符：是用来进行模糊匹配（匹配字符串）
+基本语法：like匹配模式
+匹配模式中，有两种占位符：
+_：匹配对应的单个字符
+%：匹配多个字符
+select * from my_student where stu_name like '小%';
 
