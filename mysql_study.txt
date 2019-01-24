@@ -137,11 +137,25 @@ max():求最大值
 min():求最小值
 group_concat():为了将分组中指定的字段进行合并（字符串拼接）
 
+多分组
+将数据探明某个字段进行分组之后，对已经分组的数据进行再次分组
+基本语法：group by 字段1,字段2;//先探明字段1进行排序，之后将结果再按照字段2进行排序
+alter table my_student add gender enum('男', '女', '保密');
+update my_student set gender = 1 where stu_id in ('stu0001', 'stu0003');
+insert into my_student values('stu0005', '小猪', 1, 30, 173, 2);
+-- 多分组
+select class_id, gender, count(*), group_concat(stu_name) from my_student group by class_id, gender;
 
+分组排序
+mysql中，分组默认有排序的功能：按照分组字段进行排序，默认是升序
+基本语法：group by 字段[asc|desc], 字段[asc|desc]
+select class_id, gender, count(*), group_concat(stu_name) from my_student group by class_id asc, gender desc;
 
-
-
-
+回溯统计
+当分组进行多分组之后，往上统计的过程中，需要进行层层上报，将这种层层上报统计的过程称为回溯统计：每一次分组向上统计的过程都会产生一次新的统计数据，而且当前数据对应的分组字段为NULL。
+基本语法：group by 字段 [asc|desc]with rollup;
+select class_id, count(*) from my_student group by class_id with rollup;
+select class_id, gender, count(*) from my_student group by class_id, gender with rollup;
 
 
 
