@@ -239,3 +239,224 @@ _：匹配对应的单个字符
 %：匹配多个字符
 select * from my_student where stu_name like '小%';
 
+联合查询
+联合查询是可合并多个相似的选择查询的结果集。等同于将一个表追加到另一个表，从而实现将两个表的查询组合到一起，使用谓词为UNION或UNION ALL。
+联合查询：将多个查询的结果合并到一起（纵向合并）：字段数不变，多个查询的记录数合并
+应用块景
+1.将同一张表中不同的结果（需要对应金条查询语句来实现），合并到一起展示数据。
+2.最常见：在数据量大的情况下，会对表进行分表操作，需要对每张表进行部分数据统计，使用联合查询来将数据存放到一起显示。
+基本语法:
+select语句
+union [union 选项]
+select 语句；
+union选项：与select选项基本一样
+distinct:去重，去掉完全重复的数据（默认的）
+all:保存所有的结果
+(select * from my_student where gender = '男' order by stu_height asc limit 10)
+union
+(select * from my_student where gender = '女' order by stu_height desc limit 10);
+注意细节：union理论上只要保证字段数一样，不需要每次拿到的数据对应的字段类型一致。永远只保留第一个select语句对应的字段名字。
+
+order by的使用
+2. 在联合查询中，如果要使用order by,那么对应select语句必须配合使用limit：而limit后面必须跟对应的限制数量（通常可以使用一个较大的值：大于对应表的记录数）
+
+连接查询
+将多张表连到一起进行查询（会导致记录数行和字段数列发生改变）
+连接查询的意义
+在关系型数据库设计过程中，实体（表）与实体之间是存在很多联系的。在关系型数据库表的设计过程中，遵循着关系来设计：一对一，一对多和多对多，通常在实际操作的过程中，需要利用这层关系来保证数据的完整性。
+连接查询分类
+连接查询一共有以下几类
+交叉连接
+内连接
+外连接：左外连接（左连接）和右外连接（右连接）
+自然连接
+
+交叉连接
+将两张表的数据与另外一张表彼此交叉
+原理
+1.从第一张表依次取出每一条记录
+2.取出每一条记录之后，与另外一张表的全部记录挨个匹配
+3.没有任何匹配条件，所有的结果都会进行保留
+4.记录数=第一张表记录数 * 第二张表记录数；字段数 = 第一张表字段数 + 第二张表字段数（笛卡尔积）
+语法
+基本语法：表1 cross join 表2
+select * from my_student cross join my_int;
+应用
+交叉连接产生的结果是笛卡尔积，没有实际应用。
+本质：from 表1,表2；
+
+内连接
+inner join,从一张表中取出所有的记录去另外一张表中匹配：利用匹配条件进行匹配，成功了则保留，失败了放弃。
+原理
+1.从第一张表中取出一条记录，然后去另外一张表中进行匹配
+2.利用匹配条件进行匹配
+2.1 匹配到：保留，继续向下匹配
+2.2 匹配失败：向下继续，如果全表匹配失败，结束
+语法
+基本语法：表1[inner]join 表 2 on 匹配条件；
+create table my_class( id int primary key auto_increment, name varchar(10) not null unique)charset utf8;
+insert into my_class values(null, '1班'), (null, '2班'), (null, '3班');
+select * from my_student inner join my_class; -- 可以，没有条件，笛卡尔积
+1.如果内连接没有条件（允许），那么其实就是交叉连接（避免）
+2.使用匹配条件进行匹配
+select * from my_student inner join my_class on class_id = id;
+3.因为表的设计通常容易产生同名字段，尤其是ID，所以为了避免重名出现错误，通常使用表名.字段名，来确保唯一性
+select * from my_student inner join my_class on my_student.class_id = my_class.id;
+4.通常，如果条件中使用到对应的表名，而表名通常比较长，所以可以通过表别名来简化
+select * from my_student as s inner join my_class c on s.class_id = c.id;
+5.内连接匹配的时候，必须保证匹配到都会去保存
+select * from my_class c inner join my_student as s on  s.class_id = c.id;
+6.内连接因为不强制必须使用匹配条件(on)因此可以在数据匹配完成之后，使用where条件来限制，效果与on一样（建议使用on）
+select * from my_class c inner join my_student as s where  s.class_id = c.id;
+应用
+内连接通常是在对数据有精确要求的地方使用：必须保证两种表中都能进行数据匹配。
+
+外连接
+outer join，按照某一张表作为主表（表中所有记录在最后都会保留），根据条件去连接另外一张表，从而得到目标数据。
+外连接分为两种：左外连接(left join)，右外连接(right join)
+左连接：左表是主表
+右连接：右表是主表
+原理
+1.确定连接主表：左连接就是left join左边的表为主表；right join右边为主表
+2.拿主表的每一条记录，去匹配另外一张表（从表）的每一条记录
+3.如果满足匹配条件：保留；不满足不保留
+4.如果主表记录在从表中一条都没有匹配成功，那么也要保留该记录：从表对应的字段值都为NULL
+语法
+基本语法：
+左连接：主表left join 从表 on 连接条件
+右连接：从表right join 主表 on 连接条件
+左连接对应的主表数据在左边；右连接对应的主表数据在右边：
+select * from my_student as s left join my_class c on s.class_id = c.id;
+select * from my_student as s right join my_class c on s.class_id = c.id;
+特点
+1.外连接中主表数据记录一定会保存：连接之后不会出现记录数少于主表（内连接可能）
+2.左连接和右连接其实可以互相转换，但是数据对应的位置（表顺序）会改变
+应用
+非常常用的一种获取数据方式：作为数据获取对应主表以及其它数据（关联）
+
+using关键字
+是在连接查询中用来代替对应的on关键字的，进行条件匹配
+原理
+1.在连接查询时，使用on的地方用using代替
+2.使用using的前提是对应的两张表连接的字段是同名（类似自然连接自动匹配）
+3.如果使用using关键字，那么对应的同名字段，最终在结果中只会保留一个。
+语法
+基本语法：表1[inner,left,right]join 表2 using(同名字段列表);//连接字段
+select * from my_student left join my_class using(class_id);
+
+子查询
+子查询是一种常用计算机语言SELECT-SQL语言中嵌套查询下层的程序模块。当一个查询是另一个查询的条件时，称之为子查询。
+子查询：指在一条select语句中，嵌入了另外一条select语句，那么被嵌入的select语句称之为子查询语句。
+主查询概念
+主查询：主要的查询对象，第一条select语句，确定的用户所有获取的数据目标（数据源），已经要具体得到的字段信息。
+子查询和主查询的关系
+1.子查询是嵌入到主查询中的；
+2.子查询是辅助主查询的：要么作为条件，要么作为数据源
+3.子查询其实可以独立存在：是一条完整的select语句
+子查询分类
+按功能分
+标量子查询：子查询返回的结果是一个数据（一行一列）
+语法
+基本语法：select * from 数据源 where条件判断 =/<>(select 字段名 from 数据源 where 条件判断);//子查询得到的结果只有一个值
+-- 知道一个学生的名字：小猪，想知道他在哪个班级（班级名字）
+-- 1.通过学生表获取他所在班级ID
+-- 2.通过班级ID获取班级名字
+-- 标量子查询实现
+select * from my_class where id = (select class_id from my_student where stu_name = '小猪');
+列子查询：返回的结果是一列（一列多行）
+语法：主查询 where 条件 in（列子查询）;
+-- 想获取已经有学生在班的所有班级名字；
+-- 1.找出学生表中所有的班级ID
+-- 2.找出班级表中对应的名字
+-- 列子查询实现
+select name from my_class where id in (select distinct class_id from my_student);
+行子查询：返回的结果是一行（一行多列）
+行元素：字段元素是指一个字段对应的值，行元素对应就是多个字段：多个字段合起来作为一个元素参与运算，把这种情况称之为行元素。
+语法：主查询 where 条件[(构造一个行元素)] = (行子查询);
+-- 需求：获取班级上年龄，且身高最高的学生
+-- 1.求出班级年龄最大的值
+-- 2.求出班级身高最高的值
+-- 3.求出对应的学生
+select * from my_student where (stu_age, stu_height) = (select max(stu_age), max(stu_height) from my_student);
+总结：已经学过三个子查询：常见的三个子查询
+标题子查询，列子查询和行子查询：都属于where子查询
+表子查询：返回的结果是多行多列（多行多列）
+表子查询与行子查询非常相似，只是行子查询需要产生行元素，而表子查询没有。
+行子查询是用于where条件判断：where子查询
+表子查询是用于from数据源:from子查询
+语法：select 字段表 from (表子查询)[where][group by][having][order by][limit];
+-- 获取每个班上身高最高的学生（一个）
+select * from my_student group by class_id having stu_height = max(stu_height);（错误）
+-- 1.将每个班最高的学生排在最前面：order by
+-- 2.再针对结果进行group by:保留每组第一个
+select * from (select * from my_student order by stu_height desc) as temp group by class_id;
+exists子查询：返回的结果1或者0（类似布尔操作）1代表成立，0代表不成立
+语法：where exists(查询语句);//exists就是根据查询得到的结果进行判断：如果结果存在，那么返回1，否则返回0
+where 1：永远为真
+-- 求出，有学生在的所有班级
+select * from my_class as c where exists(select stu_id from my_student as s where s.class_id = c.id);
+按位置分
+where子查询：子查询出现的位置在where条件中
+from子查询：子查询出现的位置在from数据源中（做数据源）
+
+子查询中特定关键字的使用
+in:主查询 where 条件 in (列子查询);
+any:=any(列子查询):条件在查询结果中有任意一个匹配即可，等价于in
+<>any(列子查询):条件在查询结果中不等于任意一个
+1 =any(1,2,3) =====true
+1 <>any(1,2,3) =====true
+some
+与any完全一样
+all
+=all(列子查询):等于里面所有
+<>all(列子查询):不等于里面所有
+select * from my_class where id =all(select class_id from my_student);
+select * from my_class where id <>all(select class_id from my_student);
+select * from my_class where id <>any(select class_id from my_student);
+如果对应的匹配字段有NULL，那么不参与匹配
+
+
+整库数据备份与还原
+整库数据备份也叫SQL数据备份：备份的结果都是SQL指令
+在mysql中提供了一个专门用于备份SQL的客户端：mysqldump.exe
+应用场景
+SQL备份是一种mysql非常常见的备份与还原方式，SQL备份不只是备份数据，还备份对应的SQL指令（表结构）：即便是数据库遭到毁灭性破坏（数据库被删），那么利用SQL备份依然可以实现数据还原。
+SQL备份因为需要备份结构，因此产生的备份文件特别大，因此不适合特大型数据备份，也不适合数据变换频繁型数据库备份。
+应用方案
+SQL备份 
+SQL备份用到的是专门的备份客户端，因此还没与数据库服务器进行连接。
+基本语法：mysqldump/mysqldump.exe -hPup 数据库名字[表1 [表2...]] > 备份文件地址
+备份可以有三种形式：
+1.整库备份（只需要提供数据库名字）
+mysqldump.exe -hlocalhost -P3306 -uroot -p123456 test1 > E:\study\mysql\temp\test1.sql
+2.单表备份：数据库后面跟一张表
+3.多表备份：数据库后跟多张表
+mysqldump -uroot -p123456 test1 my_class my_student > E:\study\mysql\temp\tables_class_student.sql
+数据还原
+mysql提供了多种方式来实现：两种
+mysqldump备份的数据中没有关于数据库本身的操作，都是针对表级别的操作：当进行数据（SQL还原），必须指定数据库
+1.利用mysql.exe客户端：没有登录之前，可以直接用该客户端进行数据还原
+mysql.exe -hPup 数据库 < 文件位置
+2.在SQL指令，提供了一种导入SQL指令的方式
+source SQL文件位置 //必须先进入到对应的数据库
+3.人为操作：打开备份文件，复制所有SQL指令，然后执行。
+
+用户权限管理
+在不同的项目中给不同的角色（开发者）不同的操作权限，为了保证数据库数据的安全。
+
+外键
+外键概念
+外键：foreign key
+一张表(A)中有一个字段，保存的值指向另外一张表(B)中的主键
+B:主表
+A:从表
+外键的操作
+mysql中提供了两种方式增加外键
+1.方案1：在创建表的时候增加外键（类似主键）
+基本语法：在字段之后增加一条语句
+[constraint `外键名`]foreign key(外键字段)references 主表(主键);
+2.方案2：在创建表后增加外键
+alter table 从表 add constraint `外键名`]foreign key(外键字段)references 主表(主键);
+create table my_foreign(id int primary key auto_increment, name varchar(10) not null, class_id int, foreign key(class_id) references my_class(id))charset utf8;
+MUL:多索引，外键本身是是一个索引，外键要求外键字段本身也是一种普通索引。 
+
