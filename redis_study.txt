@@ -1,0 +1,120 @@
+redis-benchmark命令性能测试命令
+redis-check-aof和redis-check-dump是日志检测工具
+redis-server是服务器端启动命令
+redis-cli是客户端连接服务器命令
+
+set name xiaobao
+set age 12
+get age
+incr age
+incrby age 50
+
+构造哈希的键
+hset user:id:1 id 1
+hset user:id:1 name guangtouqiang
+hset user:id:1 age 12
+hset user:id:1 email xiaoguang@sohu.com
+hget user:id:1 id
+hget user:id:1 name
+hmset user:id:2 id 2 name xiongda age 12 email daxiong@sohu.com
+hmset user:id:3 id 3 name xionger age 12 email xiaoxiong@sohu.com
+hmget user:id:1 id name age email
+hmget user:id:3 id name age
+hgetall user:id:3
+
+lpush list1 libai
+lrange list1 0 -1
+rpush list1 sushi
+ltrim list1 0 1
+lpop list1
+
+sadd set1 libai
+sadd set1 dufu
+sadd set1 likui
+sadd set1 xioingda
+sadd set2 dufu
+sadd set2 likui
+sadd set2 songjiang
+sadd set2 fangla
+smembers set1
+smembers set2
+//差集
+sdiff set1 set2
+//交集
+sinter set1 set2
+//并集
+sunion set1 set2
+//获取元素个数
+scard set1
+
+//有序集合
+zadd zset1 10 xiaobao
+zadd zset1 3 xiaohei
+zadd zset1 33 xiaobai
+//取出内容
+zrange zset1 0 -1
+降序
+zrevrange zset1 0 -1
+
+redis常用命令
+keys
+返回当前数据库里面的键，可以使用通配符， * 表示：任意多个， ？任意字符
+keys *
+keys user*
+//判断是否存在
+exists name
+//删除键
+del age
+//设置有效期
+expire name 60
+//返回键剩余过期时间
+ttl name
+//返回键类型
+type set1
+
+select 
+选择数据库，在redis里面黑夜有0-15号数据库，默认是0号数据库，可以通过redis.conf配置文件进行设置。
+切换数据库语法：select 数据库的编号
+ select 1
+ 
+ dbsize  返回当前数据库键的个数
+flushdb 清空当前数据库里面所有的键
+flushall 清空所有数据库里面的所有的键
+
+安全认证
+配置文件设置 requirepass
+方式1：通过客户端登录服务器时，添加-a选项。语法：redis-cli -a 密码
+方式2：登录服务器后，使用auth命令来完成验证。语法auth 密码.
+
+持久化机制
+snapshotting(快照)默认方式
+append-only file(缩写 aof)的方式
+配置文件中
+save 900 1 #900秒内如果超过1个KEY被修改，则发起快照保存
+save 300 10 #300秒内超过10个KEY被修改，则发起快照保存
+save 60 10000 #60秒内超过一万个KEY被修改，则发起快照保存
+注意：屏蔽该触发条件，即可关闭快照方式
+
+手动发起快照 
+没有登录状态 ./redis-cli bgsave
+在登录状态 直接执行bgsave
+
+append-only file
+本质：把用户执行的每个“写”指令（添加，修改，删除）都备份到文件中，不愿数据的时候就是执行胚体写指令而已。
+如何开启
+appendonly yes//启用 aof持久化方式
+appendfilename appendonly.aof //保存命令的文件（可以指定路径）
+触发条件
+appendfsync always //每次收到写命令就立即强制写入磁盘，最慢的，但是保证完全的持久化，不推荐使用
+appendfsync everysec //每秒种强制写入磁盘一次，在性能和持久化方面做了很好的折中，推荐
+appendfsync no //完全依赖 os, 性能最好，持久化没保证
+重写aof文件
+bgrewriteaof
+
+
+
+
+
+
+
+
