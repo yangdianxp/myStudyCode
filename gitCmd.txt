@@ -22,6 +22,9 @@ git checkout [commit] [file] //恢复某个commit的指定文件到暂存区和�
 git checkout . //恢复暂存区的所有文件到工作区
 git branch
 git add readme.txt  //把文件放入暂存区
+git add -A  提交所有变化
+git add -u  提交被修改(modified)和被删除(deleted)文件，不包括新文件(new)
+git add .  提交新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件
 git commit -m "branch test"  //git commit -v 将修改差异的每一行都包含到注释中来
 git commit --amend  //撤消提交 此命令将使用当前的暂存区域快照提交。
 git reset HEAD benchmarks.rb  //取消暂存
