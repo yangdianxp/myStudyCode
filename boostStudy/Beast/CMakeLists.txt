@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
-PROJECT(main)
+PROJECT(gateway)
 
 #AUX_SOURCE_DIRECTORY(./ SRC_LIST)
 
@@ -17,6 +17,6 @@ INCLUDE_DIRECTORIES(./)
 LINK_DIRECTORIES(${CMAKE_CURRENT_SOURCE_DIR})
 
 #ADD_EXECUTABLE(gateway ${SRC_LIST})
-ADD_EXECUTABLE(main http_client_async.cpp)
+ADD_EXECUTABLE(main websocket_client_sync.cpp)
 
-TARGET_LINK_LIBRARIES(stdc++ m pthread boost_log_setup boost_log boost_system boost_date_time boost_regex boost_filesystem boost_thread)
+TARGET_LINK_LIBRARIES(main stdc++ m pthread boost_log_setup boost_log boost_system boost_date_time boost_regex boost_filesystem boost_thread)
