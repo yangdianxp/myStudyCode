@@ -8,3 +8,4 @@ my_net_lib.vcxproj.user
 block
 *.db
 .vs/
+vsproject/
