@@ -333,6 +333,19 @@ tar命令
 --exclude：用来排除某些目录和文件，目录最后的/不要
 
 
+curl命令：
+url命令是一个功能强大的网络工具，它能够通过http、ftp等方式下载文件，也能够上传文件。其实curl远不止前面所说的那些功能，大家可以通过man curl阅读手册页获取更多的信息。类似的工具还有wget。curl命令使用了libcurl库来实现，libcurl库常用在C程序中用来处理HTTP请求，curlpp是libcurl的一个C++封装，这几个东西可以用在抓取网页、网络监控等方面的开发，而curl命令可以帮助来解决开发过程中遇到的问题。
+-v/--verbose 小写的v参数，用于打印更多信息，包括发送的请求信息，这在调试脚本是特别有用。
+-m/--max-time <seconds> 指定处理的最大时长
+-H/--header <header> 指定请求头参数
+-s/--slient 减少输出的信息，比如进度
+--connect-timeout <seconds> 指定尝试连接的最大时长
+-x/--proxy <proxyhost[:port]> 指定代理服务器地址和端口，端口默认为1080
+-o/--output <file> 指定输出文件名称
+-d/--data/--data-ascii <data> 指定POST的内容
+--retry <num> 指定重试次数
+-e/--referer <URL> 指定引用地址
+-I/--head 仅返回头部信息，使用HEAD请求
 
 
 
