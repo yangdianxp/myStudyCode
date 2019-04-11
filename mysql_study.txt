@@ -213,6 +213,9 @@ select '1' <=> 1, 0.02 <=> 0;
 在条件判断的时候，还有对应比较运算符：计算区间
 select * from my_student where stu_age between 20 and 30;
 between中条件1必须小于条件2，反过来不可以
+时间比较：
+select * from t_cts_txs_send where txState = 6 and createTime > '20190410' and uid = 25 limit 100;
+select * from t_cts_txs_send where modifyTime > '2019-04-11 14:10:00' and uid = 25 limit 100;
 
 逻辑运算符
 and or not
