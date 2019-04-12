@@ -75,10 +75,17 @@ struct my_error : virtual boost::exception, virtual std::exception { }; //(2)
 
 void f()
 {
-	my_error e = my_error();
-	e << my_info("aaaaaaaaaaaaaaaaaaaaaa");
+	try
+	{
+		my_error e = my_error();
+		e << my_info("aaaaaaaaaaaaaaaaaaaaaa");
 
-	BOOST_THROW_EXCEPTION(e); //(3)
+		BOOST_THROW_EXCEPTION(e); //(3)
+	}
+	catch (my_error& e)
+	{
+		throw e;
+	}
 }
 
 int main()
@@ -87,7 +94,7 @@ int main()
 	{
 		f();
 	}
-	catch (boost::exception& e)
+	catch (my_error& e)
 	{
 		if (char const ** mi = boost::get_error_info<my_info>(e))
 			std::cerr << "My info: " << *mi << std::endl;;
