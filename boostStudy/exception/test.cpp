@@ -1,4 +1,48 @@
 
+#if 1
+
+//Àý³Ì
+#include <boost/exception/all.hpp>
+#include <iostream>
+
+typedef boost::error_info<struct tag_my_info, std::string> my_info; //(1)
+
+struct my_error : virtual boost::exception, virtual std::exception { }; //(2)
+
+void f()
+{
+	try
+	{
+		my_error e = my_error();
+		e << my_info("aaaaaaaaaaaaaaaaaaaaaa");
+
+		BOOST_THROW_EXCEPTION(e); //(3)
+	}
+	catch (my_error& e)
+	{
+		throw;
+	}
+}
+
+int main()
+{
+	try
+	{
+		f();
+	}
+	catch (my_error& e)
+	{
+		std::cerr << *(boost::get_error_info<my_info>(e)) << std::endl;
+		std::cerr << *(boost::get_error_info<boost::throw_function>(e)) << std::endl;
+		std::cerr << *(boost::get_error_info<boost::throw_file>(e)) << std::endl;
+		std::cerr << *(boost::get_error_info<boost::throw_line>(e)) << std::endl;
+	}
+
+	system("pause");
+	return 0;
+}
+#endif
+
 #if 0
 
 #include <boost/exception/all.hpp>
@@ -63,47 +107,3 @@ fopen_error
 
 #endif
 
-#if 1
-
-//Àý³Ì
-#include <boost/exception/all.hpp>
-#include <iostream>
-
-typedef boost::error_info<struct tag_my_info, char const *> my_info; //(1)
-
-struct my_error : virtual boost::exception, virtual std::exception { }; //(2)
-
-void f()
-{
-	try
-	{
-		my_error e = my_error();
-		e << my_info("aaaaaaaaaaaaaaaaaaaaaa");
-
-		BOOST_THROW_EXCEPTION(e); //(3)
-	}
-	catch (my_error& e)
-	{
-		throw e;
-	}
-}
-
-int main()
-{
-	try
-	{
-		f();
-	}
-	catch (my_error& e)
-	{
-		if (char const ** mi = boost::get_error_info<my_info>(e))
-			std::cerr << "My info: " << *mi << std::endl;;
-		std::cerr << *(boost::get_error_info<boost::throw_function>(e)) << std::endl;
-		std::cerr << *(boost::get_error_info<boost::throw_file>(e)) << std::endl;
-		std::cerr << *(boost::get_error_info<boost::throw_line>(e)) << std::endl;
-	}
-
-	system("pause");
-	return 0;
-}
-#endif
