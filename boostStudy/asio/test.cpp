@@ -1,3 +1,76 @@
+#include <iostream>
+#include <string>
+#include <functional>
+#include <thread>
+#include <boost/asio.hpp>
+#include <boost/asio/spawn.hpp>
+
+using boost::asio::ip::tcp;
+
+void recv_func(tcp::iostream& stream, boost::asio::steady_timer& timer, const boost::system::error_code& ec)
+{
+	std::cout << ec.value() << ec.message() << std::endl;
+	std::cout << "aaaaaaaaaaaaaaaaaaa" << std::endl;
+	timer.expires_from_now(std::chrono::seconds(3));
+	timer.async_wait(std::bind(recv_func, std::ref(stream), std::ref(timer), std::placeholders::_1));
+}
+
+void send_func(tcp::iostream& stream, boost::asio::steady_timer& timer, const boost::system::error_code& ec)
+{
+	std::cout << ec.value() << ec.message() << std::endl;
+	std::string str("hahahahaha");
+	stream << str << std::endl;
+	timer.expires_from_now(std::chrono::seconds(2));
+	timer.async_wait(std::bind(send_func, std::ref(stream), std::ref(timer), std::placeholders::_1));
+}
+
+int main()
+{
+	boost::asio::io_context io_context;
+	tcp::endpoint ep(tcp::v4(), 6688);
+	tcp::acceptor acceptor(io_context, ep);
+
+	tcp::iostream tcp_stream;
+	acceptor.accept(*tcp_stream.rdbuf());
+
+	boost::asio::steady_timer timer(io_context);
+	timer.expires_from_now(std::chrono::seconds(3));
+	boost::asio::steady_timer timer1(io_context);
+	timer1.expires_from_now(std::chrono::seconds(2));
+	timer.async_wait(std::bind(recv_func, std::ref(tcp_stream), std::ref(timer), std::placeholders::_1));
+	timer1.async_wait(std::bind(send_func, std::ref(tcp_stream), std::ref(timer1), std::placeholders::_1));
+
+	io_context.run();
+
+	system("pause");
+}
+
+#if 0
+tcp::iostream tcp_stream("192.168.0.174", "8080");
+while (true)
+{
+	tcp_stream << "hahaha" << std::endl;
+	std::this_thread::sleep_for(std::chrono::seconds(2));
+}
+
+tcp_stream.close();
+
+
+boost::asio::io_context io_context;
+tcp::resolver r(io_context);
+tcp::resolver::query q("www.baidu.com", "https");
+auto iter = r.resolve(q);
+decltype(iter) end;
+for (; iter != end; ++iter)
+{
+	auto addr = iter->endpoint().address();
+	auto port = iter->endpoint().port();
+	std::cout << addr.to_string() << std::endl;
+	std::cout << port << std::endl;
+}
+
+
+
 //
 // echo_server.cpp
 // ~~~~~~~~~~~~~~~
@@ -133,7 +206,7 @@ int main(int argc, char* argv[])
 	return 0;
 }
 
-
+#endif
 
 
 
