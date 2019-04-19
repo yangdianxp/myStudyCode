@@ -2,10 +2,30 @@
 #include <string>
 #include <functional>
 #include <thread>
+#include <future>
 #include <boost/asio.hpp>
 #include <boost/asio/spawn.hpp>
 
 using boost::asio::ip::tcp;
+
+void initiazer(std::promise<int>* promObj) {
+	std::cout << "Inside Thread" << std::endl;
+	promObj->set_value(35);
+}
+
+
+int main()
+{
+	std::promise<int> promiseObj;
+	std::future<int> futureObj = promiseObj.get_future();
+	std::thread th(initiazer, &promiseObj);
+	std::cout << futureObj.get() << std::endl;
+	th.join();
+
+	system("pause");
+}
+
+#if 0
 
 void recv_func(tcp::iostream& stream, boost::asio::steady_timer& timer, const boost::system::error_code& ec)
 {
@@ -24,28 +44,22 @@ void send_func(tcp::iostream& stream, boost::asio::steady_timer& timer, const bo
 	timer.async_wait(std::bind(send_func, std::ref(stream), std::ref(timer), std::placeholders::_1));
 }
 
-int main()
-{
-	boost::asio::io_context io_context;
-	tcp::endpoint ep(tcp::v4(), 6688);
-	tcp::acceptor acceptor(io_context, ep);
+boost::asio::io_context io_context;
+tcp::endpoint ep(tcp::v4(), 6688);
+tcp::acceptor acceptor(io_context, ep);
 
-	tcp::iostream tcp_stream;
-	acceptor.accept(*tcp_stream.rdbuf());
+tcp::iostream tcp_stream;
+acceptor.accept(*tcp_stream.rdbuf());
 
-	boost::asio::steady_timer timer(io_context);
-	timer.expires_from_now(std::chrono::seconds(3));
-	boost::asio::steady_timer timer1(io_context);
-	timer1.expires_from_now(std::chrono::seconds(2));
-	timer.async_wait(std::bind(recv_func, std::ref(tcp_stream), std::ref(timer), std::placeholders::_1));
-	timer1.async_wait(std::bind(send_func, std::ref(tcp_stream), std::ref(timer1), std::placeholders::_1));
+boost::asio::steady_timer timer(io_context);
+timer.expires_from_now(std::chrono::seconds(3));
+boost::asio::steady_timer timer1(io_context);
+timer1.expires_from_now(std::chrono::seconds(2));
+timer.async_wait(std::bind(recv_func, std::ref(tcp_stream), std::ref(timer), std::placeholders::_1));
+timer1.async_wait(std::bind(send_func, std::ref(tcp_stream), std::ref(timer1), std::placeholders::_1));
 
-	io_context.run();
+io_context.run();
 
-	system("pause");
-}
-
-#if 0
 tcp::iostream tcp_stream("192.168.0.174", "8080");
 while (true)
 {
