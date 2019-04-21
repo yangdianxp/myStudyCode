@@ -136,6 +136,9 @@ sum():求后
 max():求最大值
 min():求最小值
 group_concat():为了将分组中指定的字段进行合并（字符串拼接）
+select gender, group_concat(name) from students group by gender;
+select gender, count(*) from students group by gender;
+select gender, group_concat(name, "_", age, " ", id) from students where gender = 1 group by gender;
 
 多分组
 将数据探明某个字段进行分组之后，对已经分组的数据进行再次分组
@@ -167,6 +170,8 @@ alter table my_student change stu_height stu_height tinyint unsigned;
 insert into my_student values('stu0007', '小江', 1, 25, 178, 2);
 select class_id, count(*) as number from my_student group by class_id having number >= 4;
 强调：having是在group by之后，group by是在where之后，where的时候表示将数据从磁盘拿到内存，where之后的所有操作都是内存操作。
+select gender, group_concat(name) from students group by gender having avg(age) > 30;
+select gender, group_concat(name) from students group by gender having count(*) > 2;
 
 order by排序：根据校对规则对数据进行排序
 基本语法：order by 字段 [asc|desc] //asc升序 desc降序
@@ -190,7 +195,8 @@ limit通常在查询的时候如果限定为一条记录的时候，使用的比
 mysql中记录的数量从0开始
 limit 0,2;表示获取前两条记录。
 -- 分页获取数据
-select * from my_student limit 1, 2;
+select * from my_student limit 1, 5;
+select * from students order by age asc limit 10, 2;
 注意：limit后面的length表示最多获取对应数量，但是如果数量不够，系统不会强求。
 
 查询中的运算符
@@ -311,6 +317,8 @@ select * from my_student as s inner join my_class c on s.class_id = c.id;
 select * from my_class c inner join my_student as s on  s.class_id = c.id;
 6.内连接因为不强制必须使用匹配条件(on)因此可以在数据匹配完成之后，使用where条件来限制，效果与on一样（建议使用on）
 select * from my_class c inner join my_student as s where  s.class_id = c.id;
+select student.*, classes.name from students inner join classes on students.cls_id = classes.id;
+select c.name, s.* from students as s inner join classes as c on s.cls_id = c.id order by c.name, s.id;
 应用
 内连接通常是在对数据有精确要求的地方使用：必须保证两种表中都能进行数据匹配。
 
@@ -331,6 +339,9 @@ outer join，按照某一张表作为主表（表中所有记录在最后都会�
 左连接对应的主表数据在左边；右连接对应的主表数据在右边：
 select * from my_student as s left join my_class c on s.class_id = c.id;
 select * from my_student as s right join my_class c on s.class_id = c.id;
+select * from students as s left join classes as c on s.cls_id = c.id having c.id is null;
+select * from students as s left join classes as c on s.cls_id = c.id where c.id is null;
+
 特点
 1.外连接中主表数据记录一定会保存：连接之后不会出现记录数少于主表（内连接可能）
 2.左连接和右连接其实可以互相转换，但是数据对应的位置（表顺序）会改变
