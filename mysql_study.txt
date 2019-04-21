@@ -348,6 +348,9 @@ select * from students as s left join classes as c on s.cls_id = c.id where c.id
 应用
 非常常用的一种获取数据方式：作为数据获取对应主表以及其它数据（关联）
 
+自关联：
+select * from areas as province inner join areas as city on city.pid = province.aid having province.atitle = "山东省"; 
+
 using关键字
 是在连接查询中用来代替对应的on关键字的，进行条件匹配
 原理
