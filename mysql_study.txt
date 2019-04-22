@@ -449,17 +449,28 @@ mysqldump.exe -hlocalhost -P3306 -uroot -p123456 test1 > E:\study\mysql\temp\tes
 2.单表备份：数据库后面跟一张表
 3.多表备份：数据库后跟多张表
 mysqldump -uroot -p123456 test1 my_class my_student > E:\study\mysql\temp\tables_class_student.sql
+mysqldump -uroot -pmysql --all-databases --lock-all-tables > ~/master_db.sql
 数据还原
 mysql提供了多种方式来实现：两种
 mysqldump备份的数据中没有关于数据库本身的操作，都是针对表级别的操作：当进行数据（SQL还原），必须指定数据库
 1.利用mysql.exe客户端：没有登录之前，可以直接用该客户端进行数据还原
-mysql.exe -hPup 数据库 < 文件位置
+mysql -uroot -p 新数据库名 < python.sql
+mysql -uroot -pmysql < master_db.sql
 2.在SQL指令，提供了一种导入SQL指令的方式
 source SQL文件位置 //必须先进入到对应的数据库
 3.人为操作：打开备份文件，复制所有SQL指令，然后执行。
 
 用户权限管理
 在不同的项目中给不同的角色（开发者）不同的操作权限，为了保证数据库数据的安全。
+
+主从配置
+主：
+grant replication slave on *.* to 'slave'@'%' identified by 'slave';
+flush privileges;
+show master status;
+从：
+change master to master_host='10.211.55.5', master_user'slave', master_password='slave', master_log_file='mysql-bin.000006', master_log_pos = 590;
+show slave status;
 
 外键
 外键概念
@@ -571,11 +582,28 @@ savepoint,当有一系列事务操作时，而其中的步骤如果成功了，�
 回到回滚点：rollback to 回滚点名字；//回滚点之后的所有操作没有了
 注意：在一个事务处理中，可以设置多个回滚点。如果回到了前面的回滚点，后面的回滚点就失效
 
+创建索引：
+create index title_index on test_index(title(10));
+show index from 表名; 查看索引
+drop index 索引名称 on 表名;  删除索引 
+
+账户管理：
+mysql 库中的user表是用来账户管理的。
+grant 权限列表 on 数据库 to '用户名'@'访问主机' identified by '密码';
+grant select on jing_dong.* to 'laowang'@'localhost' identified by '123456';
+grant all privileges on jing_dong.* to "laoli"@"%" identified by '123456';
+update user set authentication_string=password('123') where user = 'laowang';
+flush privileges;
+
+主从同步机制：
+
 
 mysql管理：
 show processlist; 列出当前用户的前100条连接信息；
 show full processlist; 列出当前用户的所有连接信息；
 show global variables like 'port';   //查看监听端口号
+set profiling = 1; 开启运行时间监测
+show profiles;  查看执行时间
 
 
 
