@@ -573,7 +573,9 @@ savepoint,当有一系列事务操作时，而其中的步骤如果成功了，�
 
 
 mysql管理：
-show full processlist\G;    //查看当前连接进程
+show processlist; 列出当前用户的前100条连接信息；
+show full processlist; 列出当前用户的所有连接信息；
+show global variables like 'port';   //查看监听端口号
 
 
 
