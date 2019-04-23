@@ -1,0 +1,9 @@
+﻿Boost.Fiber 学习笔记（一）
+c++没有纤程，Boost.Fiber提供了一个合作调度的纤程库。
+fiber库能够保存当前的执行状态，包括所有的寄存器和cpu标志位，指令指针和栈指针，以备调度时用来恢复。我们一般使用fiber在单个线程上运行多个执行路径。当前运行的fiber显示的决定何时让出CPU给其它的fiber.  Boost.Fiber内部使用Boost.Context来切换fiber的上下文，线程之间切换上下文需要数千个机器周期，而fiber只需要一百个以内。
+使用Boost.Fiber只需要
+#include <boost/fiber/all.hpp>
+并且链接libboost_fiber库即可。
+有两个名称空间需要使用。
+
+Boost.Fiber是采用的round robin调度规则，同一时刻只有一个fiber在给定线程上运行。在给定线程上生成的fiber不会分配给其它硬件核心，尽管它可以更高效的利用当前核心。
