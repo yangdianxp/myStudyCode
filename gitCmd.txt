@@ -37,6 +37,7 @@ git revert [commit] //新建一个commit，用来撤销指定commit，后者的�
 git stash   git stash pop  //暂时将未提交的变化移除，稍后再移入
 git checkout master
 git checkout -- benchmarks.rb //取消对文件的修改
+git checkout -  //快速切换到上一个分支
 git merge dev
 git branch -d dev
 git log --graph --pretty=oneline --abbrev-commit
@@ -45,6 +46,9 @@ git clone -o booyah //默认的远程分支名字将会是 booyah/master
 git status //确定哪些文件当前处于什么状态
 git diff //查看具体修改，比较工作目录中当前文件和暂存区域快照之间的差异
 git diff --cached  git diff --staged //已经暂存起来的文件和上次提交时的快照之间的差异
+git diff <commit-id> <commit-id> //显示本地仓库中任意两个commit之间的文件变动
+git diff --cached //显示暂存区和最近版本的不同
+git diff HEAD  //显示暂存区、工作区和最近版本的不同
 git commit -a  // 自动把所有已经跟踪过的文件暂存起来一并提交
 git rm //从已跟踪文件清单中移除，并连带从工作目录中删除指定的文件。
 git rm --cached readme.txt //从git仓库中删除，但仍保留在当前工作目录中
@@ -100,20 +104,43 @@ git log --pretty="%h - %s" --author=gitster --since="2008-10-01" --before="2008-
 gitk  //启动图形化界面，查看历史提交
 
 git tag  //列出现有标签的
+git describe --tags --abbrev=0   //显示当前分支的最近的 tag
+git tag -ln  //查看标签详细信息
+git tag <version-number>   //本地构建标签
+git tag -a <version-number> -m "v1.0 发布 (描述)" <commit-id>  //默认 tag 是打在最近的一次 commit 上，如果需要指定 commit 打 tag
+git push origin <local-version-number>  //Push 标签到远程仓库 首先要保证本地构建好了标签才可以 Push 标签到远程仓库
+git push origin --tags  //一次性 Push 所有标签，同步到远程仓库
+git tag -d <tag-name>  //移除本地标签
+git push origin :refs/tags/<tag-name>  //移除远程标签  移除远程标签需要先移除本地标签
+git checkout -b branch_name tag_name  //切回到某个标签  一般上线之前都会打 tag，就是为了防止上线后出现问题，方便快速回退到上一版本。
 
 git branch  //列出当前所有分支的清单
 git branch -v //查看每一个分支的最后一次提交
-git branch -a //查看所有分支
+git branch -vv //显示本地分支关联远程仓库的情况
+git branch -u origin/mybranch //关联远程分支，关联之后git branch -vv就可以显示关联的远程分支名了，同时push到远程仓库直接：git push，不需要指定远程仓库了
+或者 git push origin/mybranch -u
+git branch -a //查看所有分支，本地和远程的
+git branch -r //举出所有远程分支
 git branch --merged //查看哪些分支已经合并到当前分支
 git branch --no-merged //查看所有包含未合并工作的分支
+git branch --merged master | grep -v '^\*\| master' | xargs -n 1 git branch -d  //移除已经合并到master的分支
 git branch testing  //创建一个新的分支指针
+git branch -m <new-branch-name>  //重全名本地分支
+
 git checkout testing  //切换分支
 git checkout -b testing  //新建并切换到分支
+git checkout -b <branch-name> origin/<branch-name>  //从远程分支中构建并切换到本地分支
 git checkout master
 git merge testing   //切换到master分支，合并testing到master分支，如何合并有冲突，冲突解决之后，要用git add重新加入到暂存区
 git branch -d testing //删除分支
 git push origin --delete Chapater6 //删除远程分支Chapater6 
+或者：git push origin :<remote-branchname>
 git mergetool //调用一个可视化的合并工具并引导你解决所有冲突
+
+git help -g  //显示帮助信息
+git fetch --all && git reset --hard origin/master //抛弃本地所有的更改，回到远程仓库的状态
+git update-ref -d HEAD  //重设第一个commit
+
 
 
 cat .gitignore
