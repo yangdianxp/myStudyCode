@@ -290,6 +290,7 @@ int main( int argc, char *argv[]) {
     // successful read_ec()
 //[callbacks_read_ec_call
     std::tie( ec, data) = read_ec( api);
+	std::cout << ec << ", " << data << std::endl;
 //]
     assert( ! ec);
     assert( data == "efgh");         // last successful write_ec()
@@ -297,6 +298,7 @@ int main( int argc, char *argv[]) {
     // read_ec() with error
     api.inject_error(3);
     std::tie( ec, data) = read_ec( api);
+	std::cout << ec << ", " << data << std::endl;
     assert( ec == 3);
     // 'data' in unspecified state, don't test
 
