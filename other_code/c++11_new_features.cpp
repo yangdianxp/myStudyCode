@@ -5,6 +5,52 @@
 
 using namespace std;
 
+void f(int && a)
+{
+	cout << a << endl;
+}
+
+template<typename T>
+void f1(T&& param)
+{
+	cout << param << endl;
+}
+
+int&& f2(void)
+{
+	int a = 10;
+	cout << &a << endl;
+	return std::move(a);
+}
+
+int&& f3(void)
+{
+	int&& a = f2();
+	cout << &a << endl;
+	int b = 10;
+	return std::move(a);
+}
+
+
+int main()
+{
+	int&& a = f3();
+	cout << &a << endl;
+
+	/*f(10);
+	int a = 8;
+	f(std::move(a));
+	a = 6;
+	f(std::move(a));*/
+	/*f1(10);
+	int a = 8;
+	f1(std::move(a));*/
+	
+	system("pause");
+}
+
+#if 0
+
 template <typename T>
 void f(T&&) {
 	cout << boolalpha;
@@ -14,21 +60,15 @@ void f(T&&) {
 	cout << endl;
 }
 
-int main()
-{
-	int i = 0;
-	int &ri = i;
-	int &&rri = 4;
-	f(i);     //左值
-	f(ri);    // 左值引用
-	f(0);      //右值
-	f(std::move(i)); // 匿名的右值引用， 正确识别
-	f(rri);       //实际上 f 收到的是左值引用, 右值引用只能绑定到 右值 上，而不能绑定到另一个右值引用上， 左值引用却可以绑定到另一个右值引用或者另一个左值引用或者左值上
+int i = 0;
+int &ri = i;
+int &&rri = 4;
+f(i);     //左值
+f(ri);    // 左值引用
+f(0);      //右值
+f(std::move(i)); // 匿名的右值引用， 正确识别
+f(rri);       //实际上 f 收到的是左值引用, 右值引用只能绑定到 右值 上，而不能绑定到另一个右值引用上， 左值引用却可以绑定到另一个右值引用或者另一个左值引用或者左值上
 
-	system("pause");
-}
-
-#if 0
 
 void f(int&& a)
 {
