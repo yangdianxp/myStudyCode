@@ -2,8 +2,41 @@
 #include <iterator>
 #include <string>
 #include <regex>
+#include <memory>
 
 using namespace std;
+
+
+
+int main()
+{
+	
+	system("pause");
+}
+
+#if 0
+#define LOG(...) {\
+	fprintf(stderr, "%s: Line %d:\t", __FILE__, __LINE__);\
+	fprintf(stderr, __VA_ARGS__);\
+	fprintf(stderr, "\n");\
+ }
+
+int x = 3;
+LOG("x = %d", x);
+
+struct TestStruct {
+	TestStruct() : name(__func__) {}
+	const char *name;
+};
+
+TestStruct ts;
+cout << ts.name << endl;
+
+
+const char* hello() { return __func__; }
+const char* world() { return __func__; }
+
+cout << hello() << ", " << world() << endl;
 
 void f(int && a)
 {
@@ -31,25 +64,17 @@ int&& f3(void)
 	return std::move(a);
 }
 
+int&& a = f3();
+cout << &a << endl;
 
-int main()
-{
-	int&& a = f3();
-	cout << &a << endl;
-
-	/*f(10);
-	int a = 8;
-	f(std::move(a));
-	a = 6;
-	f(std::move(a));*/
-	/*f1(10);
-	int a = 8;
-	f1(std::move(a));*/
-	
-	system("pause");
-}
-
-#if 0
+/*f(10);
+int a = 8;
+f(std::move(a));
+a = 6;
+f(std::move(a));*/
+/*f1(10);
+int a = 8;
+f1(std::move(a));*/
 
 template <typename T>
 void f(T&&) {
