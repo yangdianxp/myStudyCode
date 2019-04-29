@@ -6,15 +6,67 @@
 
 using namespace std;
 
+class Mem {
+public:
+	Mem(int i) : m(i) {}
 
+private:
+	int m;
+};
+
+class Group {
+public:
+	Group() {}
+	Group(int a) : data(a) {}
+	Group(Mem m) : mem(m) {}
+	Group(int a, Mem m, string n) : data(a), mem(m), name(n) {}
+
+private:
+	int data = 1;
+	Mem mem{ 0 };
+	string name{ "Group" };
+};
 
 int main()
 {
 	
+
 	system("pause");
 }
 
 #if 0
+
+struct Mem {
+	Mem() { cout << "Mem default, num: " << num << endl; }
+	Mem(int i) : num(i) { cout << "Mem, num: " << num << endl; }
+
+	int num = 2;
+};
+
+class Group {
+public:
+	Group() { cout << "Group default. val: " << val << endl; }
+	Group(int i) : val('G'), a(i) { cout << "Group. val:" << val << endl; }
+	void NumOfA() { cout << "number of A: " << a.num << endl; }
+	void NumOfB() { cout << "number of B: " << b.num << endl; }
+
+private:
+	char val{ 'g' };
+	Mem a;
+	Mem b{ 19 };
+};
+
+
+Mem member;
+
+Group group;
+group.NumOfA();
+group.NumOfB();
+
+Group group2(7);
+group2.NumOfA();
+group2.NumOfB();
+
 #define LOG(...) {\
 	fprintf(stderr, "%s: Line %d:\t", __FILE__, __LINE__);\
 	fprintf(stderr, __VA_ARGS__);\
