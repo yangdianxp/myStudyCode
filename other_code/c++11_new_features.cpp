@@ -3,18 +3,54 @@
 #include <string>
 #include <regex>
 #include <memory>
+#include <vector>
+#include <deque>
+#include <list>
+#include <algorithm>
 
 using namespace std;
 
-template <typename T> void TempFun(T a) {
-	cout << a << endl;
+class HasPtrMem {
+public:
+	HasPtrMem() : d(new int{ 3 }) {
+		cout << "Construct: " << ++n_cstr << endl;
+	}
+	HasPtrMem(const HasPtrMem & h) : d(new int(*h.d)) {
+		cout << "Copy construct: " << ++n_cstr << endl;
+	}
+	HasPtrMem(HasPtrMem && h) : d(h.d) {
+		h.d = nullptr;
+		cout << "Move construct: " << ++n_mvtr << endl;
+	}
+	~HasPtrMem() {
+		delete d;
+		cout << "Destruct: " << ++n_dstr << endl;
+	}
+	int * d;
+	static int n_cstr;
+	static int n_dstr;
+	static int n_cptr;
+	static int n_mvtr;
+};
+
+int HasPtrMem::n_cstr = 0;
+int HasPtrMem::n_dstr = 0;
+int HasPtrMem::n_cptr = 0;
+int HasPtrMem::n_mvtr = 0;
+
+HasPtrMem GetTemp() { 
+	HasPtrMem h;
+	cout << "Resource from " << __func__ << ": " << hex << h.d << endl;
+	return h; 
 }
 
 int main()
 {
-	TempFun(1);
-	TempFun("1");
-
+	{
+		HasPtrMem a = GetTemp();
+		cout << "Resource from " << __func__ << ": " << hex << h.d << endl;
+	}
+	
 	system("pause");
 	return 0;
 }
@@ -22,6 +58,139 @@ int main()
 
 
 #if 0
+
+class HasPtrMem {
+public:
+	HasPtrMem() : d(new int{ 0 }) {
+		cout << "Construct: " << ++n_cstr << endl;
+	}
+	HasPtrMem(const HasPtrMem & h) : d(new int(*h.d)) {
+		cout << "Copy construct: " << ++n_cstr << endl;
+	}
+	~HasPtrMem() {
+		cout << "Destruct: " << ++n_dstr << endl;
+	}
+	int * d;
+	static int n_cstr;
+	static int n_dstr;
+	static int n_cptr;
+};
+
+int HasPtrMem::n_cstr = 0;
+int HasPtrMem::n_dstr = 0;
+int HasPtrMem::n_cptr = 0;
+
+HasPtrMem GetTemp() { return HasPtrMem(); }
+
+{
+	HasPtrMem a = GetTemp();
+}
+
+class DCExcept {
+public:
+	DCExcept(double d)
+		try : DCExcept(1, d) {
+
+	}
+	catch (...) {
+		cout << "caught exception." << endl;
+	}
+private:
+	DCExcept(int i, double d) {
+		cout << "going to throw!" << endl;
+		throw 0;
+	}
+	int type;
+	double data;
+};
+
+DCExcept a(1.2);
+
+class TDConstructed {
+	template<class T> TDConstructed(T first, T last) :
+		l(first, last) {}
+	list<int> l;
+
+public:
+	TDConstructed(vector<short> & v) :
+		TDConstructed(v.begin(), v.end()) {}
+	TDConstructed(deque<int> & d) :
+		TDConstructed(d.begin(), d.end()) {}
+	void print()
+	{
+		for_each(l.begin(), l.end(), [](int i) {cout << i << "\t"; });
+		std::cout << endl;
+	}
+};
+
+vector<short> v{ 1, 2, 3, 4 };
+TDConstructed t(v);
+t.print();
+deque<int> d{ 100, 300, 500, 700 };
+TDConstructed t1(d);
+t1.print();
+
+class Info {
+public:
+	Info() : Info(1) {}
+	Info(int i) : Info(i, 'a') {}
+	Info(char e) : Info(1, e) {}
+
+private:
+	Info(int i, char e) : type(i), name(e) {}
+	int type{ 1 };
+	char name{ 'a' };
+};
+
+Info i(1);
+Info i1('c');
+
+class Info {
+public:
+	Info() : Info(1, 'a') {}
+	Info(int i) : Info(i, 'a') {}
+	Info(char e) : Info(1, e) {}
+
+private:
+	Info(int i, char e) : type(i), name(e) {}
+	int type{ 1 };
+	char name{ 'a' };
+};
+
+class Info {
+public:
+	Info() { InitRest(); }
+	Info(int i) : Info() { type = i; }
+	Info(char e) : Info() { name = e; }
+
+private:
+	void InitRest() {}
+	int type{ 1 };
+	char name{ 'a' };
+};
+
+
+
+struct A {
+	A(int i) {}
+	A(double d, int i) {}
+	A(float f, int i, const char* c) {}
+};
+
+struct B : A {
+	using A::A;
+	virtual void ExtraInterface() {}
+};
+
+B b(1);
+b.ExtraInterface();
+
+TempFun(1);
+TempFun("1");
+
+template <typename T> void TempFun(T a) {
+	cout << a << endl;
+}
 
 template <typename T> class DefenderT {
 public:
