@@ -10,6 +10,69 @@
 
 using namespace std;
 
+//void RunCode(int m) { cout << "lvalue" << endl; }
+void RunCode(int && m) { cout << "rvalue ref" << endl; }
+void RunCode(int & m) { cout << "lvalue ref" << endl; }
+void RunCode(const int && m) { cout << "const rvalue ref" << endl; }
+void RunCode(const int & m) { cout << "const lvalue ref" << endl; }
+
+template <typename T>
+void PerfectForward(T && t) { RunCode(forward<T>(t)); }
+
+int main()
+{
+	int a;
+	int b;
+	const int c = 1;
+	const int d = 0;
+
+	PerfectForward(a);
+	PerfectForward(move(b));
+	PerfectForward(c);
+	PerfectForward(move(d));
+	
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
+
+106
+
+template <typename T>
+void IamForwording(T && t) {
+	IrunCodeActually(static_cast<T &&>(t));
+}
+
+struct Maythrow {
+	Maythrow() {}
+	Maythrow(const Maythrow&) {
+		std::cout << "Maythrow copy constructor." << endl;
+	}
+	Maythrow(Maythrow&&) {
+		std::cout << "Maythrow move constructor." << endl;
+	}
+};
+
+struct Nothrow {
+	Nothrow() {}
+	Nothrow(Nothrow&&) noexcept {
+		std::cout << "Nothrow move constructor." << endl;
+	}
+	Nothrow(const Nothrow&) {
+		std::cout << "Nothrow copy constructor." << endl;
+	}
+};
+
+{
+	Maythrow m;
+	Nothrow n;
+	Maythrow mt = move_if_noexcept(m);
+	Nothrow nt = move_if_noexcept(n);
+}
+
 class HugeMem {
 public:
 	HugeMem(int size) : sz(size > 0 ? size : 1) {
@@ -41,22 +104,11 @@ Moveable GetTemp() {
 	return tmp;
 }
 
-
-int main()
 {
-	{
-		Moveable a(GetTemp());
-		cout << hex << "Huge Mem from " << __func__
-			<< "@" << a.h.c << endl;
-	}
-	
-	system("pause");
-	return 0;
+	Moveable a(GetTemp());
+	cout << hex << "Huge Mem from " << __func__
+		<< "@" << a.h.c << endl;
 }
-
-
-
-#if 0
 
 class Moveable {
 public:
