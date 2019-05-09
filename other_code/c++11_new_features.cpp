@@ -10,10 +10,86 @@
 
 using namespace std;
 
+class HugeMem {
+public:
+	HugeMem(int size) : sz(size > 0 ? size : 1) {
+		c = new int[sz];
+	}
+	~HugeMem() { delete[] c; }
+	HugeMem(HugeMem && hm) : sz(hm.sz), c(hm.c) {
+		hm.c = nullptr;
+	}
+	int* c;
+	int sz;
+};
+class Moveable {
+public:
+	Moveable() :i(new int(3)), h(1024) {}
+	~Moveable() { delete i; }
+	Moveable(Moveable && m) :
+		i(m.i), h(move(m.h)) {
+		m.i = nullptr;
+	}
+
+	int* i;
+	HugeMem h;
+};
+Moveable GetTemp() {
+	Moveable tmp = Moveable();
+	cout << hex << "Huge Mem from " << __func__
+		<< "@" << tmp.h.c << endl;
+	return tmp;
+}
+
+
+int main()
+{
+	{
+		Moveable a(GetTemp());
+		cout << hex << "Huge Mem from " << __func__
+			<< "@" << a.h.c << endl;
+	}
+	
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
+
+class Moveable {
+public:
+	Moveable() : i(new int(3)) { }
+	~Moveable() { delete i; }
+	Moveable(const Moveable & m) : i(new int(*m.i)) {}
+	Moveable(Moveable && m) : i(m.i) {
+		m.i = nullptr;
+	}
+	int* i;
+};
+
+Moveable a;
+Moveable c(move(a));
+cout << *a.i << endl;
+
+class my_class {
+public:
+	int a = 5;
+};
+
+void func_a(my_class&& c)
+{
+	cout << "func_a:" << c.a << endl;
+}
+
+func_a(my_class());
+
 class HasPtrMem {
 public:
 	HasPtrMem() : d(new int{ 3 }) {
 		cout << "Construct: " << ++n_cstr << endl;
+		cout << "*d = " << *d << endl;
 	}
 	HasPtrMem(const HasPtrMem & h) : d(new int(*h.d)) {
 		cout << "Copy construct: " << ++n_cstr << endl;
@@ -23,6 +99,7 @@ public:
 		cout << "Move construct: " << ++n_mvtr << endl;
 	}
 	~HasPtrMem() {
+		std::cout << "d = " << d << endl;
 		delete d;
 		cout << "Destruct: " << ++n_dstr << endl;
 	}
@@ -38,26 +115,16 @@ int HasPtrMem::n_dstr = 0;
 int HasPtrMem::n_cptr = 0;
 int HasPtrMem::n_mvtr = 0;
 
-HasPtrMem GetTemp() { 
+HasPtrMem GetTemp() {
 	HasPtrMem h;
 	cout << "Resource from " << __func__ << ": " << hex << h.d << endl;
-	return h; 
+	return h;
 }
 
-int main()
 {
-	{
-		HasPtrMem a = GetTemp();
-		cout << "Resource from " << __func__ << ": " << hex << h.d << endl;
-	}
-	
-	system("pause");
-	return 0;
+	HasPtrMem a = GetTemp();
+	cout << "Resource from " << __func__ << ": " << hex << a.d << endl;
 }
-
-
-
-#if 0
 
 class HasPtrMem {
 public:
