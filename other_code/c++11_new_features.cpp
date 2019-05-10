@@ -7,8 +7,107 @@
 #include <deque>
 #include <list>
 #include <algorithm>
+#include <map>
 
 using namespace std;
+
+class Mydata {
+public:
+	Mydata & operator [] (initializer_list<int> l)
+	{
+		for (auto i = l.begin(); i != l.end(); ++i)
+			idx.push_back(*i);
+		return *this;
+	}
+	Mydata & operator = (int v)
+	{
+		if (idx.empty() != true) {
+			for (auto i = idx.begin(); i != idx.end(); ++i) {
+				d.resize((static_cast<size_t>(*i) > d.size()) ? *i : d.size());
+				d[*i - 1] = v;
+			}
+			idx.clear();
+		}
+		return *this;
+	}
+	void Print() {
+		for (auto i = d.begin(); i != d.end(); ++i)
+			cout << *i << " ";
+		cout << endl;
+	}
+
+private:
+	vector<int> idx;
+	vector<int> d;
+};
+
+int main()
+{
+	Mydata d;
+	d[{2, 3, 5}] = 7;
+	d[{1, 4, 5, 8}] = 4;
+	d.Print();
+	
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
+
+113
+
+void Fun(initializer_list<int> iv) {}
+
+Fun({ 1, 2 });
+Fun({});
+
+enum Gender { boy, girl };
+class People {
+public:
+	People(initializer_list<pair<string, Gender>> li) {
+		auto i = li.begin();
+		for (; i != li.end(); ++i)
+			data.push_back(*i);
+	}
+
+private:
+	vector<pair<string, Gender>> data;
+};
+
+People ship2012 = { {"Garfield", boy}, {"HelloKitty", girl} };
+
+int a[] = { 1, 3, 5 };
+int b[]{ 2, 4, 5 };
+vector<int> c{ 1, 3, 5 };
+map<int, float> d =
+{ {1, 1.0f}, {2, 2.0f}, {5, 3.2f} };
+
+template <typename T>
+class Ptr {
+public:
+	Ptr(T* p) : _p(p) {}
+	operator bool() const {
+		if (_p != 0)
+			return true;
+		else
+			return false;
+	}
+private:
+	T* _p;
+};
+
+int a;
+Ptr<int> p(&a);
+
+if (p)
+cout << "valid pointer." << endl;
+else
+cout << "invalid pointer." << endl;
+
+Ptr<double> pd(0);
+cout << p + pd << endl;
 
 //void RunCode(int m) { cout << "lvalue" << endl; }
 void RunCode(int && m) { cout << "rvalue ref" << endl; }
@@ -19,27 +118,15 @@ void RunCode(const int & m) { cout << "const lvalue ref" << endl; }
 template <typename T>
 void PerfectForward(T && t) { RunCode(forward<T>(t)); }
 
-int main()
-{
-	int a;
-	int b;
-	const int c = 1;
-	const int d = 0;
+int a;
+int b;
+const int c = 1;
+const int d = 0;
 
-	PerfectForward(a);
-	PerfectForward(move(b));
-	PerfectForward(c);
-	PerfectForward(move(d));
-	
-	system("pause");
-	return 0;
-}
-
-
-
-#if 0
-
-106
+PerfectForward(a);
+PerfectForward(move(b));
+PerfectForward(c);
+PerfectForward(move(d));
 
 template <typename T>
 void IamForwording(T && t) {
