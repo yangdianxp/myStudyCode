@@ -11,6 +11,68 @@
 
 using namespace std;
 
+struct Trivial1 {};
+struct Trivial2 {
+public:
+	int a;
+private:
+	int b;
+};
+
+struct Trivial3 {
+	Trivial1 a;
+	Trivial2 b;
+};
+
+struct Trivial4 {
+	Trivial2 a[23];
+};
+
+struct Trivial5 {
+	int x;
+	static int y;
+};
+
+struct NonTrivial1 {
+	NonTrivial1() : z(42) {}
+	int z;
+};
+
+struct NonTrivial2 {
+	NonTrivial2();
+	int w;
+};
+NonTrivial2::NonTrivial2() = default;
+
+struct NonTrivial3 {
+	Trivial5 c;
+	virtual void f();
+};
+
+int main()
+{
+	cout << is_trivial<Trivial1>::value << endl;
+	cout << is_trivial<Trivial2>::value << endl;
+	cout << is_trivial<Trivial3>::value << endl;
+	cout << is_trivial<Trivial4>::value << endl;
+	cout << is_trivial<Trivial5>::value << endl;
+	cout << is_trivial<NonTrivial1>::value << endl;
+	cout << is_trivial<NonTrivial2>::value << endl;
+	cout << is_trivial<NonTrivial3>::value << endl;
+	
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
+vector<int> Func() { return { 1, 3 }; }
+
+
+vector<int> v = Func();
+for_each(v.begin(), v.end(), [](int i) { cout << i << endl; });
+
 class Mydata {
 public:
 	Mydata & operator [] (initializer_list<int> l)
@@ -41,22 +103,10 @@ private:
 	vector<int> d;
 };
 
-int main()
-{
-	Mydata d;
-	d[{2, 3, 5}] = 7;
-	d[{1, 4, 5, 8}] = 4;
-	d.Print();
-	
-	system("pause");
-	return 0;
-}
-
-
-
-#if 0
-
-113
+Mydata d;
+d[{2, 3, 5}] = 7;
+d[{1, 4, 5, 8}] = 4;
+d.Print();
 
 void Fun(initializer_list<int> iv) {}
 
