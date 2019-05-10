@@ -8,8 +8,27 @@
 #include <list>
 #include <algorithm>
 #include <map>
+#include <type_traits>
 
 using namespace std;
+
+using uint = unsigned int;
+typedef unsigned int UINT;
+using sint = int;
+
+int main()
+{
+	cout << is_same<uint, UINT>::value << endl;
+	
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
+
+138
 
 struct Trivial1 {};
 struct Trivial2 {
@@ -49,24 +68,15 @@ struct NonTrivial3 {
 	virtual void f();
 };
 
-int main()
-{
-	cout << is_trivial<Trivial1>::value << endl;
-	cout << is_trivial<Trivial2>::value << endl;
-	cout << is_trivial<Trivial3>::value << endl;
-	cout << is_trivial<Trivial4>::value << endl;
-	cout << is_trivial<Trivial5>::value << endl;
-	cout << is_trivial<NonTrivial1>::value << endl;
-	cout << is_trivial<NonTrivial2>::value << endl;
-	cout << is_trivial<NonTrivial3>::value << endl;
-	
-	system("pause");
-	return 0;
-}
+cout << is_trivial<Trivial1>::value << endl;
+cout << is_trivial<Trivial2>::value << endl;
+cout << is_trivial<Trivial3>::value << endl;
+cout << is_trivial<Trivial4>::value << endl;
+cout << is_trivial<Trivial5>::value << endl;
+cout << is_trivial<NonTrivial1>::value << endl;
+cout << is_trivial<NonTrivial2>::value << endl;
+cout << is_trivial<NonTrivial3>::value << endl;
 
-
-
-#if 0
 vector<int> Func() { return { 1, 3 }; }
 
 
