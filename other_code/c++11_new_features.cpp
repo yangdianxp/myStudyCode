@@ -9,16 +9,15 @@
 #include <algorithm>
 #include <map>
 #include <type_traits>
+#include <typeinfo>
 
 using namespace std;
 
-using uint = unsigned int;
-typedef unsigned int UINT;
-using sint = int;
+
 
 int main()
 {
-	cout << is_same<uint, UINT>::value << endl;
+	
 	
 	system("pause");
 	return 0;
@@ -27,8 +26,92 @@ int main()
 
 
 #if 0
+174
 
-138
+using nullptr_t = decltype(nullptr);
+cout << typeid(nullptr).name() << endl;
+
+int i;
+decltype(i) j = 0;
+cout << typeid(j).name() << endl;
+
+float a;
+double b;
+decltype(a + b) c;
+cout << typeid(c).name() << endl;
+
+class White {};
+class Black {};
+
+White a;
+Black b;
+
+cout << typeid(a).name() << endl;
+cout << typeid(b).name() << endl;
+
+White c;
+
+bool a_b_sametype = (typeid(a).hash_code() == typeid(b).hash_code());
+bool a_c_sametype = (typeid(a).hash_code() == typeid(c).hash_code());
+
+cout << "ab:" << a_b_sametype << "  ac:" << a_c_sametype << endl;
+
+cout << typeid(int).name() << endl;
+
+double foo() { return double(); }
+float * bar() { return nullptr; }
+
+const auto a = foo();
+cout << is_same<decltype(a), const double>::value << endl;
+const auto & b = foo();
+cout << is_same<decltype(a), const double>::value << endl;
+
+template<typename T1, typename T2>
+double Sum(T1 & t1, T2 & t2) {
+	auto s = t1 + t2;
+	return s;
+}
+
+int a = 3;
+long b = 5;
+float c = 1.0f, d = 2.3f;
+auto e = Sum<int, long>(a, b);
+auto f = Sum<float, float>(c, d);
+
+class PI {
+public:
+	double operator* (float v) {
+		return (double)val * v;
+	}
+	const float val = 3.1415927f;
+};
+
+float radius{ 1.7e10 };
+PI pi;
+auto circumference = 2 * (pi * radius);
+cout << circumference << endl;
+
+auto name = "world.\n";
+cout << "hello, " << name;
+
+template<typename T> using MapString = std::map<T, string>;
+MapString<int> numberedString;
+
+template<typename T> using MapInt = std::map<T, int>;
+
+MapInt<char> mymap;
+
+// first insert function version (single parameter):
+mymap.insert(std::pair<char, int>('a', 100));
+mymap.insert(std::pair<char, int>('z', 200));
+
+numberedString.insert(make_pair(1, "aaaa"));
+
+using uint = unsigned int;
+typedef unsigned int UINT;
+using sint = int;
+
+cout << is_same<uint, UINT>::value << endl;
 
 struct Trivial1 {};
 struct Trivial2 {
