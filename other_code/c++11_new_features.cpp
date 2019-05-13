@@ -13,10 +13,13 @@
 
 using namespace std;
 
-
-
 int main()
 {
+	int *p = new int;
+	declare_reachable(p);
+	int *q = (int *)((long long)p ^ 2012);
+	q = undeclare_reachable<int>((int*)((long long)q ^ 2012));
+	*q = 10;
 	
 	
 	system("pause");
@@ -26,7 +29,20 @@ int main()
 
 
 #if 0
-184
+
+pointer_safety safety = get_pointer_safety();
+if (safety == pointer_safety::relaxed)
+{
+	cout << "safety == pointer_safety::relaxed" << endl;
+}
+else if (safety == pointer_safety::preferred)
+{
+	cout << "safety == pointer_safety::preferred" << endl;
+}
+else if (safety == pointer_safety::strict)
+{
+	cout << "safety == pointer_safety::strict" << endl;
+}
 
 void Check(weak_ptr<int> & wp) {
 	shared_ptr<int> sp = wp.lock();
