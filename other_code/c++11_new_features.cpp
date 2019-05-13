@@ -26,7 +26,36 @@ int main()
 
 
 #if 0
-174
+184
+
+void Check(weak_ptr<int> & wp) {
+	shared_ptr<int> sp = wp.lock();
+	if (sp != nullptr)
+		cout << "still " << *sp << endl;
+	else
+		cout << "pointer is invalid." << endl;
+}
+
+shared_ptr<int> sp1(new int(22));
+shared_ptr<int> sp2 = sp1;
+weak_ptr<int> wp = sp1;
+
+cout << *sp1 << endl;
+cout << *sp2 << endl;
+Check(wp);
+
+sp1.reset();
+cout << *sp2 << endl;
+Check(wp);
+
+sp2.reset();
+Check(wp);
+
+enum class Type { General, Light, Medium, Heavy };   //强类型枚举
+enum class Type { General = 1, Pistol, , MachineGun, Cannon };
+
+Type t = Type::Light;
+//t = General;
 
 using nullptr_t = decltype(nullptr);
 cout << typeid(nullptr).name() << endl;
