@@ -10,12 +10,33 @@
 #include <map>
 #include <type_traits>
 #include <typeinfo>
+#include <stdexcept>
 
 using namespace std;
 
+void Printf(const char* s) {
+	while (*s) {
+		if (*s == '%' && *++s != '%')
+			throw runtime_error("invalid format string: missing arguments");
+		cout << *s++;
+	}
+}
+
+template<typename T, typename... Args>
+void Printf(const char* s, T value, Args... args) {
+	while (*s) {
+		if (*s == '%' && *++s != '%') {
+			cout << value;
+			return Printf(++s, args...);
+		}
+		cout << *s++;
+	}
+	throw runtime_error("extra arguments provided to Printf");
+}
+
 int main()
 {
-	
+	Printf("hello %s.\n", string("world"));
 	
 	
 	system("pause");
@@ -25,8 +46,52 @@ int main()
 
 
 #if 0
+206
 
-193
+
+template <long... nums> struct Multiply;
+
+template <long first, long... last>
+struct Multiply<first, last...> {
+	static const long val = first * Multiply<last...>::val;
+};
+
+template<>
+struct Multiply<> {
+	static const long val = 1;
+};
+
+cout << Multiply<2, 3, 4, 5>::val << endl;
+cout << Multiply<22, 44, 66, 88, 9>::val << endl;
+
+template<typename T1, typename T2> class B {};
+template<typename... A> class Template : private B<A...> {};
+Template<int, double> xy;
+
+struct Date {
+	constexpr Date(int y, int m, int d) :
+		year(y), month(m), day(d) {}
+
+	constexpr int GetYear() { return year; }
+	constexpr int GetMonth() { return month; }
+	constexpr int GetDay() { return day; }
+private:
+	int year;
+	int month;
+	int day;
+};
+
+constexpr Date PRCfound{ 1949, 10, 1 };
+const int foundmonth = PRCfound.GetMonth();
+
+//cout << foundmonth << endl;
+	//cout << PRCfound.GetMonth() << endl;
+
+struct MyType {
+	constexpr MyType(int x) : i(x) {}
+	int i;
+};
+constexpr MyType mt = { 0 };
 
 int *p = new int;
 declare_reachable(p);
