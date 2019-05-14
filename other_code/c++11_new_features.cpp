@@ -11,8 +11,84 @@
 #include <type_traits>
 #include <typeinfo>
 #include <stdexcept>
+#include <cassert>
+#include <tuple>
 
 using namespace std;
+
+
+
+
+int main()
+{
+	
+
+
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
+213
+
+using my_type = vector<tuple<int, string, const char*>>;
+
+my_type a;
+a.push_back(make_tuple(1, "aaa", "111"));
+a.push_back(make_tuple(2, "bbb", "222"));
+for_each(a.begin(), a.end(), [](tuple<int, string, const char*>& t)
+{
+	cout << get<int>(t) << '\t' << get<string>(t) << '\t' << get<const char*>(t) << endl;
+});
+
+template<typename A, typename B> struct S {};
+
+template<
+	template<typename... > class T, typename... TArgs,
+	template<typename... > class U, typename... UArgs
+>
+
+S<int, float> p;
+//S<std::tuple<int, char>, std::tuple<float>> s;
+
+template<typename I, template<typename> class... B> struct Container {};
+
+template<typename I, template<typename> class A, template<typename> class... B>
+struct Container<I, A, B...> {
+	A<I> a;
+	Container<I, B...> b;
+};
+
+template<typename I> struct Container<I> {};
+
+template<class...A> void Print(A...arg) {
+	assert(false);
+}
+
+void Print(int a1, int a2, int a3, int a4, int a5, int a6) {
+	cout << a1 << ", " << a2 << ", " << a3 << ", "
+		<< a4 << ", " << a5 << ", " << a6 << endl;
+}
+
+template<typename ... T> void DummyWrapper(T... t) {
+	cout << "DummyWrapper" << endl;
+}
+
+template<typename T> T pr(T t) {
+	cout << t;
+	return t;
+}
+
+template<typename... A>
+void VTPrint(A... a) {
+	DummyWrapper(pr(a)...);
+}
+
+
+VTPrint(1, ", ", 1.2, ", abc\n");
+
 
 void Printf(const char* s) {
 	while (*s) {
@@ -34,19 +110,7 @@ void Printf(const char* s, T value, Args... args) {
 	throw runtime_error("extra arguments provided to Printf");
 }
 
-int main()
-{
-	Printf("hello %s.\n", string("world"));
-	
-	
-	system("pause");
-	return 0;
-}
-
-
-
-#if 0
-206
+Printf("hello %s.\n", string("world"));
 
 
 template <long... nums> struct Multiply;
