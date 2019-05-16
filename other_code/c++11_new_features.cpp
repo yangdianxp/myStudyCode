@@ -15,9 +15,63 @@
 #include <tuple>
 #include <atomic>
 #include <thread>
-#include <unistd.h>
+#include <windows.h>
 
 using namespace std;
+
+atomic<int> a{ 0 };
+atomic<int> b{ 0 };
+
+int ValueSet(int) {
+	int t = 1;
+	a.store(t, memory_order_relaxed);
+	b.store(2, memory_order_acquire);
+	return 0;
+}
+
+int Observer(int) {
+	cout << "(" << a << ", " << b << ")" << endl;
+	return 0;
+}
+
+int main()
+{
+	thread t1(ValueSet, 0);
+	thread t2(Observer, 0);
+
+	t1.join();
+	t2.join();
+	cout << "Got (" << a << ", " << b << ")" << endl;
+
+
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
+atomic<int> a{ 0 };
+atomic<int> b{ 0 };
+
+int ValueSet(int) {
+	int t = 1;
+	a = t;
+	b = 2;
+	return 0;
+}
+
+int Observer(int) {
+	cout << "(" << a << ", " << b << ")" << endl;
+	return 0;
+}
+
+thread t1(ValueSet, 0);
+thread t2(Observer, 0);
+
+t1.join();
+t2.join();
+
 std::atomic_flag lock = ATOMIC_FLAG_INIT;
 
 void f(int n) {
@@ -32,26 +86,14 @@ void g(int n) {
 	cout << "Thread " << n << " starts working" << endl;
 }
 
-int main()
-{
-	lock.test_and_set();
+lock.test_and_set();
 
-	thread t1(f, 0);
-	thread t2(g, 0);
+thread t1(f, 1);
+thread t2(g, 2);
 
-	t1.join();
-	usleep(100);
-	t2.join();
-
-
-	system("pause");
-	return 0;
-}
-
-
-
-#if 0
-219
+t1.join();
+Sleep(1);
+t2.join();
 
 class my_class {
 public:
