@@ -38,6 +38,8 @@ int main()
 
 #if 0
 
+233
+
 atomic<int> a;
 atomic<int> b;
 
