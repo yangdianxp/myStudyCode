@@ -13,15 +13,35 @@
 #include <stdexcept>
 #include <cassert>
 #include <tuple>
+#include <atomic>
+#include <thread>
+#include <unistd.h>
 
 using namespace std;
+std::atomic_flag lock = ATOMIC_FLAG_INIT;
 
+void f(int n) {
+	while (lock.test_and_set(std::memory_order_acquire))
+		cout << "Waiting from thread " << n << endl;
+	cout << "Thread " << n << " starts working" << endl;
+}
 
-
+void g(int n) {
+	cout << "Thread " << n << " is going to start." << endl;
+	lock.clear();
+	cout << "Thread " << n << " starts working" << endl;
+}
 
 int main()
 {
-	
+	lock.test_and_set();
+
+	thread t1(f, 0);
+	thread t2(g, 0);
+
+	t1.join();
+	usleep(100);
+	t2.join();
 
 
 	system("pause");
@@ -31,7 +51,44 @@ int main()
 
 
 #if 0
-213
+219
+
+class my_class {
+public:
+	void add()
+	{
+		num++;
+	}
+	void print()
+	{
+		cout << num << endl;
+	}
+private:
+	long long num = 0;
+};
+
+atomic<my_class> value;
+
+
+void func(int) {
+	for (long long i = 0; i < 100000000LL; ++i) {
+		value.operator my_class
+	}
+}
+
+
+thread t1(func, 0);
+thread t2(func, 0);
+
+t1.join();
+t2.join();
+
+atomic_llong total{ 0 };
+
+total += i;
+
+
+cout << total << endl;
 
 using my_type = vector<tuple<int, string, const char*>>;
 
