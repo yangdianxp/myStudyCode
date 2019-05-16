@@ -1,23 +1,42 @@
 #include <iostream>
 #include <iterator>
 #include <string>
-#include <regex>
+//#include <regex>
 #include <memory>
 #include <vector>
 #include <deque>
 #include <list>
 #include <algorithm>
 #include <map>
-#include <type_traits>
+//#include <type_traits>
 #include <typeinfo>
 #include <stdexcept>
 #include <cassert>
-#include <tuple>
-#include <atomic>
-#include <thread>
-#include <windows.h>
+//#include <tuple>
+//#include <atomic>
+//#include <thread>
+//#include <windows.h>
 
 using namespace std;
+
+void print_terminate()
+{
+	cout << "terminate" << endl;
+}
+
+int main()
+{
+	set_terminate(print_terminate);
+	char* p = NULL;
+	*p = 'c';
+
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
 
 atomic<int> a;
 atomic<int> b;
@@ -35,24 +54,12 @@ int Thread2(int) {
 	return 0;
 }
 
-int main()
-{
-	thread t1(Thread1, 0);
-	thread t2(Thread2, 0);
+thread t1(Thread1, 0);
+thread t2(Thread2, 0);
 
-	t1.join();
-	t2.join();
-	cout << "Got (" << a << ", " << b << ")" << endl;
-
-	system("pause");
-	return 0;
-}
-
-
-
-#if 0
-
-228
+t1.join();
+t2.join();
+cout << "Got (" << a << ", " << b << ")" << endl;
 
 atomic<int> a{ 0 };
 atomic<int> b{ 0 };
