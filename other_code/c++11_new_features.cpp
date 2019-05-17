@@ -8,7 +8,7 @@
 #include <list>
 #include <algorithm>
 #include <map>
-//#include <type_traits>
+#include <type_traits>
 #include <typeinfo>
 #include <stdexcept>
 #include <cassert>
@@ -16,19 +16,25 @@
 //#include <atomic>
 //#include <thread>
 //#include <windows.h>
+#include <cstdlib>
 
 using namespace std;
 
-void print_terminate()
-{
-	cout << "terminate" << endl;
-}
+class ConvType {
+public:
+	ConvType(int i) {};
+	ConvType(char c) = delete;
+};
+
+void Func(ConvType ct) {}
 
 int main()
 {
-	set_terminate(print_terminate);
-	char* p = NULL;
-	*p = 'c';
+	Func(3);
+	Func('a');
+
+	ConvType ci(3);
+	ConvType cc('a');
 
 	system("pause");
 	return 0;
@@ -38,7 +44,73 @@ int main()
 
 #if 0
 
-233
+249
+
+class DefaultedOptr {
+public:
+	DefaultedOptr() = default;
+	DefaultedOptr & operator = (const DefaultedOptr &);
+};
+
+inline DefaultedOptr &
+DefaultedOptr::operator= (const DefaultedOptr &) = default;
+
+class NoCopyCstor {
+public:
+	NoCopyCstor() = default;
+
+	NoCopyCstor(const NoCopyCstor &) = delete;
+};
+
+NoCopyCstor a;
+NoCopyCstor b(a);
+
+class TwoCstor {
+public:
+	TwoCstor() = default;
+	TwoCstor(int i) : data(i) {}
+
+private:
+	int data;
+};
+
+cout << is_pod<TwoCstor>::value << endl;
+
+char * cp = nullptr;
+
+nullptr_t nptr = nullptr;
+if (nptr == nullptr)
+cout << "nullptr_t nptr == nullptr" << endl;
+else
+cout << "nullptr_t nptr != nullptr" << endl;
+
+if (nptr < nullptr)
+	cout << "nullptr_t nptr < nullptr" << endl;
+else
+cout << "nullptr_t nptr !< nullptr" << endl;
+
+sizeof(nullptr);
+typeid(nullptr);
+throw(nullptr);
+
+
+struct A { ~A() { cout << "Destruct A. " << endl; } };
+
+void closeDevice() { cout << "device is closed." << endl; }
+
+
+A a;
+at_quick_exit(closeDevice);
+quick_exit(0);
+
+void print_terminate()
+{
+	cout << "terminate" << endl;
+}
+
+set_terminate(print_terminate);
+char* p = NULL;
+*p = 'c';
 
 atomic<int> a;
 atomic<int> b;
