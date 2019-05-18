@@ -20,21 +20,20 @@
 
 using namespace std;
 
-class ConvType {
-public:
-	ConvType(int i) {};
-	ConvType(char c) = delete;
-};
 
-void Func(ConvType ct) {}
 
 int main()
 {
-	Func(3);
-	Func('a');
+	int j = 12;
+	auto by_val_lambda = [=] { return j + 1; };
+	auto by_ref_lambda = [&] { return j + 1; };
+	cout << "by_val_lambda: " << by_val_lambda() << endl;
+	cout << "by_ref_lambda: " << by_ref_lambda() << endl;
 
-	ConvType ci(3);
-	ConvType cc('a');
+	j++;
+	cout << "by_val_lambda: " << by_val_lambda() << endl;
+	cout << "by_ref_lambda: " << by_ref_lambda() << endl;
+
 
 	system("pause");
 	return 0;
@@ -43,8 +42,41 @@ int main()
 
 
 #if 0
+261
 
-250
+int a = 1;
+int b = 2;
+auto func = [=]() {return a + b; };
+
+int boys = 4, girls = 3;
+auto totalChild = [girls, &boys]()->int { return girls + boys; };
+cout << totalChild() << endl;
+
+int girls = 3, boys = 4;
+auto totalChild = [](int x, int y)->int { return x + y; };
+cout << totalChild(3, 4) << endl;
+
+class NoHeapAlloc {
+public:
+	void * operator new(std::size_t) = delete;
+};
+
+NoHeapAlloc nha;
+NoHeapAlloc * pnha = new NoHeapAlloc;
+
+class ConvType {
+public:
+	ConvType(int i) {};
+	ConvType(char c) = delete;
+};
+
+void Func(ConvType ct) {}
+
+Func(3);
+Func('a');
+
+ConvType ci(3);
+ConvType cc('a');
 
 class DefaultedOptr {
 public:
