@@ -17,23 +17,25 @@
 //#include <thread>
 //#include <windows.h>
 #include <cstdlib>
+#include <functional>
 
 using namespace std;
 
+vector<int> nums;
 
+void OneCond(int val) {
+	for (auto i = nums.begin(); i != nums.end(); i++)
+		if (*i == val) break;
+	find_if(nums.begin(), nums.end(), bind2nd(equal_to<int>(), val));
+
+	find_if(nums.begin(), nums.end(), [=](int i) {
+		return i == val;
+	});
+}
 
 int main()
 {
-	int j = 12;
-	auto by_val_lambda = [=] { return j + 1; };
-	auto by_ref_lambda = [&] { return j + 1; };
-	cout << "by_val_lambda: " << by_val_lambda() << endl;
-	cout << "by_ref_lambda: " << by_ref_lambda() << endl;
-
-	j++;
-	cout << "by_val_lambda: " << by_val_lambda() << endl;
-	cout << "by_ref_lambda: " << by_ref_lambda() << endl;
-
+	OneCond(1);
 
 	system("pause");
 	return 0;
@@ -42,7 +44,56 @@ int main()
 
 
 #if 0
-261
+268
+
+vector<int> nums;
+vector<int> largeNums;
+
+const int ubound = 10;
+
+inline void LargeNumsPunc(int i) {
+	if (i > ubound)
+		largeNums.push_back(i);
+}
+
+void Above() {
+	for (auto itr = nums.begin(); itr != nums.end(); ++itr) {
+		if (*itr >= ubound)
+			largeNums.push_back(*itr);
+	}
+
+	for_each(nums.begin(), nums.end(), LargeNumsPunc);
+
+	for_each(nums.begin(), nums.end(), [=](int i) {
+		if (i > ubound)
+			largeNums.push_back(i);
+	});
+}
+Above();
+
+
+int girls = 3, boys = 4;
+auto totalChild = [](int x, int y)->int { return x + y; };
+typedef int(*allChild)(int x, int y);
+typedef int(*oneChild)(int x);
+allChild p;
+p = totalChild;
+
+//oneChild q;
+//q = totalChild;
+
+decltype(totalChild) allPeople = totalChild;
+decltype(totalChild) totalPeople = p;
+
+int j = 12;
+auto by_val_lambda = [=] { return j + 1; };
+auto by_ref_lambda = [&] { return j + 1; };
+cout << "by_val_lambda: " << by_val_lambda() << endl;
+cout << "by_ref_lambda: " << by_ref_lambda() << endl;
+
+j++;
+cout << "by_val_lambda: " << by_val_lambda() << endl;
+cout << "by_ref_lambda: " << by_ref_lambda() << endl;
 
 int a = 1;
 int b = 2;
