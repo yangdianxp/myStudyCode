@@ -18,8 +18,79 @@
 //#include <windows.h>
 #include <cstdlib>
 #include <functional>
+#include <numeric>
 
 using namespace std;
+
+void Stat(vector<int> &v) {
+	int errors;
+	int score;
+	auto print = [&] {
+		cout << "Errors: " << errors << endl
+			<< "Score: " << score << endl;
+	};
+	errors = accumulate(v.begin(), v.end(), 0);
+	score = accumulate(v.begin(), v.end(), 100, minus<int>());
+	print();
+
+	errors = 0;
+	score = 100;
+
+	for_each(v.begin(), v.end(), [&](int i) {
+		errors += i;
+		score -= i;
+	});
+	print();
+}
+
+int main()
+{
+	vector<int> v(10);
+	generate(v.begin(), v.end(), [] {
+		return rand() % 10; 
+	});
+	Stat(v);
+
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
+270
+
+vector<int> nums;
+
+void Add(const int val) {
+	auto print = [&] {
+		for (auto s : nums) {
+			cout << s << '\t';
+		}
+		cout << endl;
+	};
+	for (auto i = nums.begin(); i != nums.end(); ++i) {
+		*i = *i + val;
+	}
+	print();
+
+	for_each(nums.begin(), nums.end(), bind2nd(plus<int>(), val));
+	print();
+
+	transform(nums.begin(), nums.end(), nums.begin(), bind2nd(plus<int>(), val));
+	print();
+
+	for_each(nums.begin(), nums.end(), [=](int &i) {
+		i += val;
+	});
+	print();
+}
+
+for (int i = 0; i < 10; i++) {
+	nums.push_back(i);
+}
+Add(10);
+
 
 vector<int> nums;
 
@@ -33,18 +104,7 @@ void OneCond(int val) {
 	});
 }
 
-int main()
-{
-	OneCond(1);
-
-	system("pause");
-	return 0;
-}
-
-
-
-#if 0
-268
+OneCond(1);
 
 vector<int> nums;
 vector<int> largeNums;
