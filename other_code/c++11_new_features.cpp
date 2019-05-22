@@ -1,4 +1,4 @@
-#include <iostream>
+ï»¿#include <iostream>
 #include <iterator>
 #include <string>
 //#include <regex>
@@ -22,6 +22,54 @@
 
 using namespace std;
 
+int main()
+{
+	cout << R"(hello, \n
+			world)" << endl;
+
+	system("pause");
+	return 0;
+}
+
+
+
+#if 0
+char utf8[] = u8"\u4F60\u597D\u554A";
+char16_t utf16[] = u"hello";
+char32_t utf32[] = U"hello equals \u4F60\u597D\u554A";
+
+cout << utf8 << endl;
+cout << utf16 << endl;
+cout << utf32 << endl;
+
+/*char32_t u2[] = u"hello";
+char u3[] = U"hello";
+char16_t u4 = u8"hello";*/
+
+
+struct alignas(32) ColorVector
+{
+	double r;
+	double g;
+	double b;
+	double a;
+};
+
+cout << "alignof(ColorVector): " << alignof(ColorVector) << endl;
+
+struct HowManyBytes {
+	char a;
+	int b;
+};
+
+cout << "sizeof(char): " << sizeof(char) << endl;
+cout << "sizeof(int): " << sizeof(int) << endl;
+cout << "sizeof(HowManyBytes): " << sizeof(HowManyBytes) << endl;
+
+cout << endl;
+cout << "offset of char a: " << offsetof(HowManyBytes, a) << endl;
+cout << "offset of int b: " << offsetof(HowManyBytes, b) << endl;
+
 void Stat(vector<int> &v) {
 	int errors;
 	int score;
@@ -43,22 +91,11 @@ void Stat(vector<int> &v) {
 	print();
 }
 
-int main()
-{
-	vector<int> v(10);
-	generate(v.begin(), v.end(), [] {
-		return rand() % 10; 
-	});
-	Stat(v);
-
-	system("pause");
-	return 0;
-}
-
-
-
-#if 0
-270
+vector<int> v(10);
+generate(v.begin(), v.end(), [] {
+	return rand() % 10;
+});
+Stat(v);
 
 vector<int> nums;
 
@@ -548,7 +585,7 @@ Check(wp);
 sp2.reset();
 Check(wp);
 
-enum class Type { General, Light, Medium, Heavy };   //Ç¿ÀàĞÍÃ¶¾Ù
+enum class Type { General, Light, Medium, Heavy };   //å¼ºç±»å‹æšä¸¾
 enum class Type { General = 1, Pistol, , MachineGun, Cannon };
 
 Type t = Type::Light;
@@ -1244,11 +1281,11 @@ void f(T&&) {
 int i = 0;
 int &ri = i;
 int &&rri = 4;
-f(i);     //×óÖµ
-f(ri);    // ×óÖµÒıÓÃ
-f(0);      //ÓÒÖµ
-f(std::move(i)); // ÄäÃûµÄÓÒÖµÒıÓÃ£¬ ÕıÈ·Ê¶±ğ
-f(rri);       //Êµ¼ÊÉÏ f ÊÕµ½µÄÊÇ×óÖµÒıÓÃ, ÓÒÖµÒıÓÃÖ»ÄÜ°ó¶¨µ½ ÓÒÖµ ÉÏ£¬¶ø²»ÄÜ°ó¶¨µ½ÁíÒ»¸öÓÒÖµÒıÓÃÉÏ£¬ ×óÖµÒıÓÃÈ´¿ÉÒÔ°ó¶¨µ½ÁíÒ»¸öÓÒÖµÒıÓÃ»òÕßÁíÒ»¸ö×óÖµÒıÓÃ»òÕß×óÖµÉÏ
+f(i);     //å·¦å€¼
+f(ri);    // å·¦å€¼å¼•ç”¨
+f(0);      //å³å€¼
+f(std::move(i)); // åŒ¿åçš„å³å€¼å¼•ç”¨ï¼Œ æ­£ç¡®è¯†åˆ«
+f(rri);       //å®é™…ä¸Š f æ”¶åˆ°çš„æ˜¯å·¦å€¼å¼•ç”¨, å³å€¼å¼•ç”¨åªèƒ½ç»‘å®šåˆ° å³å€¼ ä¸Šï¼Œè€Œä¸èƒ½ç»‘å®šåˆ°å¦ä¸€ä¸ªå³å€¼å¼•ç”¨ä¸Šï¼Œ å·¦å€¼å¼•ç”¨å´å¯ä»¥ç»‘å®šåˆ°å¦ä¸€ä¸ªå³å€¼å¼•ç”¨æˆ–è€…å¦ä¸€ä¸ªå·¦å€¼å¼•ç”¨æˆ–è€…å·¦å€¼ä¸Š
 
 
 void f(int&& a)
@@ -1259,7 +1296,7 @@ void f(int&& a)
 int a = 5;
 f(std::move(a));
 
-// ¼òµ¥ÕıÔò±í´ïÊ½Æ¥Åä
+// ç®€å•æ­£åˆ™è¡¨è¾¾å¼åŒ¹é…
 std::string fnames[] = { "foo.txt", "bar.txt", "baz.dat", "zoidberg" };
 std::regex txt_regex("[a-z]+\\.txt");
 
@@ -1267,14 +1304,14 @@ for (const auto &fname : fnames) {
 	std::cout << fname << ": " << std::regex_match(fname, txt_regex) << '\n';
 }
 
-// ÌáÈ¡×ÓÆ¥Åä
+// æå–å­åŒ¹é…
 std::regex base_regex("([a-z]+)\\.txt");
 std::smatch base_match;
 
 for (const auto &fname : fnames) {
 	if (std::regex_match(fname, base_match, base_regex)) {
-		// Ê×¸ö sub_match ÊÇÕû¸ö×Ö·û´®£»ÏÂ¸ö
-		// sub_match ÊÇÊ×¸öÓĞÀ¨ºÅ±í´ïÊ½¡£
+		// é¦–ä¸ª sub_match æ˜¯æ•´ä¸ªå­—ç¬¦ä¸²ï¼›ä¸‹ä¸ª
+		// sub_match æ˜¯é¦–ä¸ªæœ‰æ‹¬å·è¡¨è¾¾å¼ã€‚
 		if (base_match.size() == 2) {
 			std::ssub_match base_sub_match = base_match[1];
 			std::string base = base_sub_match.str();
@@ -1283,7 +1320,7 @@ for (const auto &fname : fnames) {
 	}
 }
 
-// ÌáÈ¡¼¸¸ö×ÓÆ¥Åä
+// æå–å‡ ä¸ªå­åŒ¹é…
 std::regex pieces_regex("([a-z]+)\\.([a-z]+)");
 std::smatch pieces_match;
 
@@ -1319,11 +1356,11 @@ for (std::sregex_iterator i = words_begin; i != words_end; ++i) {
 std::string text = "Quick brown fox";
 std::regex vowel_re("a|e|i|o|u");
 
-// Ğ´½á¹ûµ½Êä³öµü´úÆ÷
+// å†™ç»“æœåˆ°è¾“å‡ºè¿­ä»£å™¨
 std::regex_replace(std::ostreambuf_iterator<char>(std::cout),
 	text.begin(), text.end(), vowel_re, "*");
 
-// ¹¹Ôì±£ÓĞ½á¹ûµÄ×Ö·û´®
+// æ„é€ ä¿æœ‰ç»“æœçš„å­—ç¬¦ä¸²
 std::cout << '\n' << std::regex_replace(text, vowel_re, "[$&]") << '\n';
 
 
@@ -1376,9 +1413,9 @@ int main()
 		smatch rr1;
 		smatch rr2;
 		cout << boolalpha << regex_search(s1, rr1, reg1) << endl;
-		cout << "s1Æ¥Åä½á¹û£º" << rr1.str() << endl;
+		cout << "s1åŒ¹é…ç»“æœï¼š" << rr1.str() << endl;
 		cout << boolalpha << regex_search(s2, rr2, reg1) << endl;
-		cout << "s1Æ¥Åä½á¹û£º" << rr2.str() << endl;
+		cout << "s1åŒ¹é…ç»“æœï¼š" << rr2.str() << endl;
 		cout << endl;
 	}
 
@@ -1390,8 +1427,8 @@ int main()
 		smatch r2;
 		cout << boolalpha << regex_match(s1, r1, reg1) << endl;
 		cout << boolalpha << regex_match(s2, r2, reg1) << endl;
-		cout << "s1Æ¥Åä½á¹û£º" << r1.str() << endl;
-		cout << "s2Æ¥Åä½á¹û£º" << r2.str() << endl;
+		cout << "s1åŒ¹é…ç»“æœï¼š" << r1.str() << endl;
+		cout << "s2åŒ¹é…ç»“æœï¼š" << r2.str() << endl;
 		cout << endl;
 	}
 
