@@ -3,14 +3,25 @@
 #include <string>
 using namespace std;
 
+template<typename Container, typename Index>
+decltype(auto)
+authAndAccess(Container& c, Index i)
+{
+	return c[i];
+}
 
+class Widget
+{
+
+};
 
 int main()
 {
-	auto x1 = 27;
-	auto x2(27);
-	auto x3 = { 27 };
-	auto x4{ 27 };
+	Widget w;
+	const Widget& cw = w;
+	auto myWidget1 = cw;
+
+	decltype(auto) myWidget2 = cw;
 
 	system("pause");
 }
@@ -18,7 +29,20 @@ int main()
 
 
 #if 0
-26
+31
+
+
+template<typename Container, typename Index>
+auto authAndAccess(Container& c, Index i)->decltype(c[i])
+{
+	return c[i];
+}
+
+
+auto x1 = 27;
+auto x2(27);
+auto x3 = { 27 };
+auto x4{ 27 };
 
 void someFunc(int, double)
 {
