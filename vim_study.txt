@@ -188,6 +188,10 @@ Shell切换
 :!shell_command   执行完 shell_command 后回到Vim
 
 
+分屏与标签页
+分屏
+
+
 
 
 
