@@ -1,25 +1,64 @@
 #include <iostream>
 #include <typeinfo>
 #include <string>
+#include <boost/type_index.hpp>
 using namespace std;
 
-template<typename Container, typename Index>
-decltype(auto) authAndAccess(Container&& c, Index i)
+template<typename T>
+void f(const T& param)
 {
-	return std::forward<Container>(c)[i];
+	using boost::typeindex::type_id_with_cvr;
+	cout << "T = "
+		<< type_id_with_cvr<T>().pretty_name()
+		<< '\n';
+
+	cout << "param = "
+		<< type_id_with_cvr<decltype(param)>().pretty_name()
+		<< '\n';
 }
 
-int main()
+class Widget
 {
-		
 
+};
+
+int main()
+{	
+	f(Widget());
 	system("pause");
 }
 
 
 
 #if 0
-35
+51
+
+
+template<typename T>
+void f(const T& param)
+{
+	using std::cout;
+	cout << "T = " << typeid(T).name() << '\n';
+	cout << "param = " << typeid(param).name() << '\n';
+}
+
+
+
+template<typename T>
+class TD;
+
+const int theAnswer = 42;
+auto x = theAnswer;
+auto y = &theAnswer;
+TD<decltype(x)> xType;
+TD<decltype(y)> yType;
+
+
+template<typename Container, typename Index>
+decltype(auto) authAndAccess(Container&& c, Index i)
+{
+	return std::forward<Container>(c)[i];
+}
 
 template<typename Container, typename Index>
 decltype(auto)
@@ -28,10 +67,7 @@ authAndAccess(Container& c, Index i)
 	return c[i];
 }
 
-class Widget
-{
 
-};
 
 Widget w;
 const Widget& cw = w;
