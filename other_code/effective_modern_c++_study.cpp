@@ -4,6 +4,22 @@
 using namespace std;
 
 template<typename Container, typename Index>
+decltype(auto) authAndAccess(Container&& c, Index i)
+{
+	return std::forward<Container>(c)[i];
+}
+
+int main()
+{
+		
+
+	system("pause");
+}
+
+
+
+#if 0
+template<typename Container, typename Index>
 decltype(auto)
 authAndAccess(Container& c, Index i)
 {
@@ -15,21 +31,11 @@ class Widget
 
 };
 
-int main()
-{
-	Widget w;
-	const Widget& cw = w;
-	auto myWidget1 = cw;
+Widget w;
+const Widget& cw = w;
+auto myWidget1 = cw;
 
-	decltype(auto) myWidget2 = cw;
-
-	system("pause");
-}
-
-
-
-#if 0
-31
+decltype(auto) myWidget2 = cw;
 
 
 template<typename Container, typename Index>
