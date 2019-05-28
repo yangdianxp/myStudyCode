@@ -1,10 +1,31 @@
 #include <iostream>
 #include <typeinfo>
 #include <string>
+#include <vector>
 #include <boost/type_index.hpp>
 using namespace std;
 
 template<typename T>
+
+class Widget {
+private:
+	int x{ 0 };
+	int y = 0;
+};
+
+
+int main()
+{
+	std::vector<int> v{ 1, 3, 5 };
+	system("pause");
+}
+
+
+
+#if 0
+59
+
+	f(Widget());
 void f(const T& param)
 {
 	using boost::typeindex::type_id_with_cvr;
@@ -21,18 +42,6 @@ class Widget
 {
 
 };
-
-int main()
-{	
-	f(Widget());
-	system("pause");
-}
-
-
-
-#if 0
-51
-
 
 template<typename T>
 void f(const T& param)
