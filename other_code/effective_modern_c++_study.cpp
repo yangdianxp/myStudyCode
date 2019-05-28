@@ -2,9 +2,161 @@
 #include <typeinfo>
 #include <string>
 #include <vector>
+#include <mutex>
+#include <unordered_map>
 #include <boost/type_index.hpp>
 using namespace std;
 
+
+int main()
+{
+	vector<int> values{ 1983 };
+	vector<int>::iterator it =
+		find(values.begin(), values.end(), 1983);
+	values.insert(it, 1998);
+	for_each(values.begin(), values.end(), [](auto& v) {cout << v << endl; });
+	system("pause");
+}
+
+
+
+#if 0
+87
+class Base {
+public:
+	virtual void mf1() const
+	{
+
+	}
+	virtual void mf2(int x)
+	{
+
+	}
+	virtual void mf3()&
+	{
+
+	}
+	virtual void mf4() const
+	{
+
+	}
+};
+class Derived : public Base {
+public:
+	virtual void mf1() const override
+	{
+
+	}
+	virtual void mf2(int x) override
+	{
+
+	}
+	virtual void mf3() & override
+	{
+	}
+	void mf4() const override;
+};
+	Widget w;
+	w.doWork();
+	makeWidget().doWork();
+
+class Widget {
+public:
+	void doWork() &
+	{
+		cout << "doWork &" << endl;
+	}
+
+	void doWork() &&
+	{
+		cout << "doWork &&" << endl;
+	}
+};
+
+Widget makeWidget()
+{
+	return Widget();
+}
+
+
+	std::unique_ptr<Base> upb = make_unique<Derived>();
+	upb->doWork();
+class Base {
+public:
+	virtual void doWork()
+	{
+		cout << "Base doWork" << endl;
+	}
+};
+
+class Derived : public Base {
+public:
+	virtual void doWork()
+	{
+		cout << "Derived doWork" << endl;
+	}
+};
+class Widget {
+public:
+	template<typename T>
+	void processPointer(T* ptr)
+	{
+
+	}
+};
+
+template<>
+void Widget::processPointer<void>(void*) = delete;
+	enum class Color { black, white, red };
+
+	auto white = false;
+
+	Color c = Color::white;
+	MyAllocList<Widget> lw;
+using UptrMapSS = std::unique_ptr<std::unordered_map<std::string, std::string>>;
+using FP = void(*)(int, const std::string&);
+template<typename T>
+using MyAllocList = std::list<T>;
+
+class Widget {
+private:
+	int x{ 0 };
+	int y = 0;
+};
+	auto result3 = lockAndCall(f3, f2m, nullptr);
+
+std::mutex f1m, f2m, f3m;
+template<typename FuncType,
+		typename MuxType,
+		typename PtrType>
+	decltype(auto) lockAndCall(FuncType func,
+		MuxType& mutex, PtrType ptr)
+{
+	lock_guard<MuxType> g(mutex);
+	return func(ptr);
+}
+
+class Widget {
+private:
+	int x{ 0 };
+	int y = 0;
+};
+
+int f1(std::shared_ptr<Widget> spw)
+{
+	return 0;
+}
+
+double f2(std::unique_ptr<Widget> upw)
+{
+	return 0.0;
+}
+
+bool f3(Widget* pw)
+{
+	return true;
+}
+	std::vector<int> v{ 1, 3, 5 };
 template<typename T>
 
 class Widget {
@@ -13,17 +165,6 @@ private:
 	int y = 0;
 };
 
-
-int main()
-{
-	std::vector<int> v{ 1, 3, 5 };
-	system("pause");
-}
-
-
-
-#if 0
-61
 
 	f(Widget());
 void f(const T& param)
