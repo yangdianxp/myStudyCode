@@ -4,24 +4,57 @@
 #include <vector>
 #include <mutex>
 #include <unordered_map>
+#include <algorithm>
+#include <array>
 #include <boost/type_index.hpp>
 using namespace std;
 
+constexpr
+int pow(int base, int exp) noexcept
+{
+	int result = 1;
+	for (int i = 0; i < exp; ++i)
+	{
+		result *= base;
+	}
+	return result;
+}
 
 int main()
 {
-	vector<int> values{ 1983 };
-	vector<int>::iterator it =
-		find(values.begin(), values.end(), 1983);
-	values.insert(it, 1998);
-	for_each(values.begin(), values.end(), [](auto& v) {cout << v << endl; });
+	constexpr auto numConds = 5;
+	array<int, pow(3, numConds)> results;
 	system("pause");
 }
 
 
 
 #if 0
-87
+98
+	constexpr auto arraySize2 = 10;
+	std::array<int, arraySize2> data2;
+	vector<int> values{ 1983 };
+	findAndInsert(values, 1983, 1998);
+	for_each(values.begin(), values.end(), [](auto& v) {cout << v << endl; });
+template <class C>
+auto cbegin(const C& container)->decltype(std::begin(container))
+{
+	return std::begin(container);
+}
+
+template<typename C, typename V>
+void findAndInsert(C& container, const V& targetVal, const V& insertVal)
+{
+	using std::cbegin;
+	using std::cend;
+	auto it = std::find(cbegin(container), cend(container), targetVal);
+	container.insert(it, insertVal);
+}
+	vector<int> values{ 1983 };
+	vector<int>::iterator it =
+		find(values.begin(), values.end(), 1983);
+	values.insert(it, 1998);
+	for_each(values.begin(), values.end(), [](auto& v) {cout << v << endl; });
 class Base {
 public:
 	virtual void mf1() const
