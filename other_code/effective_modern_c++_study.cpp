@@ -6,9 +6,67 @@
 #include <unordered_map>
 #include <algorithm>
 #include <array>
+#include <atomic>
 #include <boost/type_index.hpp>
 using namespace std;
 
+
+int main()
+{
+	
+	system("pause");
+}
+
+
+
+#if 0
+108
+class Widget {
+public:
+	int magicValue() const
+	{
+		std::lock_guard<std::mutex> guard(m);
+		if (cachedValue) return cachedValue;
+		else {
+		
+		}
+	}
+private:
+	mutable std::mutex m;
+	mutable int cachedValue;
+	mutable bool cacheValid;
+};
+class Point {
+public:
+	double distanceFromOrigin() const noexcept
+	{
+		++callCount;
+		return std::sqrt((x*x) + (y*y));
+	}
+
+private:
+	mutable std::atomic<unsigned> callCount{ 0 };
+	double x, y;
+};
+class Polynomial {
+public:
+	using RootsType = std::vector<double>;
+
+	RootsType roots() const
+	{
+		std::lock_guard<std::mutex> g(m);
+		if (!rootsAreValid) {
+			rootsAreValid = true;
+		}
+		return rootVals;
+	}
+private:
+	mutable std::mutex m;
+	mutable bool rootsAreValid{ false };
+	mutable RootsType rootVals{};
+};
+	constexpr auto numConds = 5;
+	array<int, pow(3, numConds)> results;
 constexpr
 int pow(int base, int exp) noexcept
 {
@@ -19,18 +77,6 @@ int pow(int base, int exp) noexcept
 	}
 	return result;
 }
-
-int main()
-{
-	constexpr auto numConds = 5;
-	array<int, pow(3, numConds)> results;
-	system("pause");
-}
-
-
-
-#if 0
-98
 	constexpr auto arraySize2 = 10;
 	std::array<int, arraySize2> data2;
 	vector<int> values{ 1983 };
