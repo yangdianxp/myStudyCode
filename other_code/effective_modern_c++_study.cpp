@@ -13,14 +13,69 @@ using namespace std;
 
 int main()
 {
-	
 	system("pause");
 }
 
 
 
 #if 0
-108
+121
+
+	std::shared_ptr<Investment> sp = makeInvestment();
+	
+
+class Investment 
+{
+public:
+	virtual ~Investment()
+	{
+
+	}
+};
+
+class Stock: public Investment
+{};
+
+class Bond: public Investment
+{};
+
+class RealEstate: public Investment
+{};
+
+template<typename... Ts>
+auto makeInvestment(Ts&&... params)
+{
+	auto delInvmt = [](Investment* pInvestment)
+	{
+		delete pInvestment; 
+	};
+	std::unique_ptr<Investment, decltype(delInvmt)> pInv(nullptr, delInvmt);
+	int type = 0;
+	if (0 == type)
+	{
+		pInv.reset(new Stock(std::forward<Ts>(params)...));
+	}
+	else if (1 == type)
+	{
+		pInv.reset(new Bond(std::forward<Ts>(params)...));
+	}
+	else if (2 == type)
+	{
+		pInv.reset(new RealEstate(std::forward<Ts>(params)...));
+	}
+	return pInv;
+}
+
+
+class Base {
+public:
+	virtual ~Base() = default;
+	Base(Base&&) = default;
+	Base& opperator=(Base&&) = default;
+
+	Base(const Base&) = default;
+	Base&operator=(const Base&) = default;
+};
 class Widget {
 public:
 	int magicValue() const
