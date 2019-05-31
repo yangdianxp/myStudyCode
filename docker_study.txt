@@ -107,11 +107,20 @@ docker restart container-name   重启 NGINX 容器命令
 docker save -o 要保存的文件名  要保存的镜像
 docker load < 文件名    从文件载入镜像可以使用Docker load命令。
 
+docker commit <exiting-Container> <hub-user>/<repo-name>[:<tag>]  我们看到这里有个容器，但是我们需要将容器制作成为镜像才可以上传
+docker tag <existing-image> <hub-user>/<repo-name>[:<tag>]    如果是已经存在的镜像，如何上传呢？先打标签
+docker push<hub-user>/<repo-name>:<tag>   docker push 镜像到docker hub 的仓库
 
 
+mysql相关：
+docker pull yangdianxp/mysql:20190531
+docker run -d --name mysql -v /home/yd/docker/mysql_data/mysql:/var/lib/mysql -p 9999:3306 yangdianxp/mysql:20190531
+mysql -h 192.168.0.212 -P 9999 -uroot -p123456
 
-
-
+redis相关：
+docker pull yangdianxp/redis:20190531
+docker run -v /home/yd/redis_data:/data -p 8888:6379 -d yangdianxp/redis:20190531 --appendonly yes
+redis-cli -h 192.168.0.212 -p 8888
 
 
 
