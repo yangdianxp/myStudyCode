@@ -13,14 +13,65 @@ using namespace std;
 
 int main()
 {
+
 	system("pause");
 }
 
 
 
 #if 0
-121
+item21  109
 
+template<typename T, typename... Ts>
+std::unique_ptr<T> make_unique(Ts&&... params)
+{
+	return std::unique_ptr<T>(new T(std::forward(Ts)(params)...));
+}
+	auto widget_ptr = fastLoadWidget(WidgetId::red);
+enum class WidgetId { red };
+
+class Widget
+{};
+
+unique_ptr<Widget> loadWidget(WidgetId id)
+{
+	return make_unique<Widget>();
+}
+
+std::shared_ptr<const Widget> fastLoadWidget(WidgetId id)
+{
+	static std::unordered_map<WidgetId,
+		std::weak_ptr<const Widget>> cache;
+	auto objPtr = cache[id].lock();
+
+	if (!objPtr) {
+		objPtr = loadWidget(id);
+		cache[id] = objPtr;
+	}
+	return objPtr;
+}
+	auto spw = std::make_shared<Widget>();
+
+	std::weak_ptr<Widget> wpw(spw);
+
+	spw = nullptr;
+
+	if (wpw.expired())
+	{
+		cout << "wpw.expired()" << endl;
+	}
+class Widget {
+public:
+	void doWork() &
+	{
+		cout << "doWork &" << endl;
+	}
+
+	void doWork() &&
+	{
+		cout << "doWork &&" << endl;
+	}
+};
 	std::shared_ptr<Investment> sp = makeInvestment();
 	
 
