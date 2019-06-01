@@ -8,20 +8,48 @@
 #include <array>
 #include <atomic>
 #include <boost/type_index.hpp>
+
+#include "effective_modern_c++_study.h"
 using namespace std;
 
+void process(const Widget& lvalArg)
+{
+	cout << "process lvalArg" << endl;
+}
+void process(Widget&& rvalArg)
+{
+	cout << "process rvalArg" << endl;
+}
+
+template<typename T>
+void logAndProcess(T&& param)
+{
+	process(std::forward<T>(param));
+}
 
 int main()
 {
-
+	Widget w;
+	logAndProcess(w);
+	logAndProcess(std::move(w));
 	system("pause");
 }
 
 
 
 #if 0
-item21  109
+item24 128 
 
+struct Widget::Impl{
+	std::string name;
+	std::vector<double> data;
+};
+
+Widget::Widget() : pImpl(std::make_unique<Impl>())
+{}
+class ReallyBigType
+{};
+auto pBigObj = std::make_shared<ReallyBigType>();
 template<typename T, typename... Ts>
 std::unique_ptr<T> make_unique(Ts&&... params)
 {
