@@ -12,6 +12,27 @@
 #include "effective_modern_c++_study.h"
 using namespace std;
 
+auto timeFuncInvocation = 
+[](auto&& func, auto&&... params)
+{
+	std::forward<decltype(func)>(func)(
+		std::forward<decltype(params)>(params)
+		);
+};
+
+int main()
+{
+	system("pause");
+}
+
+
+
+#if 0
+item25  132
+
+	Widget w;
+	logAndProcess(w);
+	logAndProcess(std::move(w));
 void process(const Widget& lvalArg)
 {
 	cout << "process lvalArg" << endl;
@@ -26,20 +47,6 @@ void logAndProcess(T&& param)
 {
 	process(std::forward<T>(param));
 }
-
-int main()
-{
-	Widget w;
-	logAndProcess(w);
-	logAndProcess(std::move(w));
-	system("pause");
-}
-
-
-
-#if 0
-item24 128 
-
 struct Widget::Impl{
 	std::string name;
 	std::vector<double> data;
