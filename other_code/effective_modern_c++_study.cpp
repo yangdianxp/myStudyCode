@@ -14,7 +14,11 @@
 #include "effective_modern_c++_study.h"
 using namespace std;
 
-
+template<typename... Ts>
+void fwd(Ts&&... params)
+{
+	f(std::forward<Ts>(params)...);
+}
 
 int main()
 {

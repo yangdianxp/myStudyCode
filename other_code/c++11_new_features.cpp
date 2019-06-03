@@ -22,10 +22,14 @@
 
 using namespace std;
 
+using FilterContainer = std::vector<std::function<bool(int)>>;
+FilterContainer filters;
+
+
 int main()
 {
-	cout << R"(hello, \n
-			world)" << endl;
+
+	filters.emplace_back([](int value) {return value % 5 == 0; });
 
 	system("pause");
 	return 0;
@@ -34,6 +38,8 @@ int main()
 
 
 #if 0
+	cout << R"(hello, \n
+			world)" << endl;
 char utf8[] = u8"\u4F60\u597D\u554A";
 char16_t utf16[] = u"hello";
 char32_t utf32[] = U"hello equals \u4F60\u597D\u554A";
