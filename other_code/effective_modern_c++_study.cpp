@@ -12,12 +12,16 @@
 #include "effective_modern_c++_study.h"
 using namespace std;
 
-auto timeFuncInvocation = 
-[](auto&& func, auto&&... params)
-{
-	std::forward<decltype(func)>(func)(
-		std::forward<decltype(params)>(params)
-		);
+class Widget {
+public:
+	Widget(Widget&& rhs)
+		: name(std::move(rhs.name)),
+		p(std::move(rhs.p))
+	{}
+
+private:
+	std::string name;
+	std::shared_ptr<> p;
 };
 
 int main()
@@ -28,8 +32,15 @@ int main()
 
 
 #if 0
-item25  132
+item26  170 
 
+auto timeFuncInvocation = 
+[](auto&& func, auto&&... params)
+{
+	std::forward<decltype(func)>(func)(
+		std::forward<decltype(params)>(params)
+		);
+};
 	Widget w;
 	logAndProcess(w);
 	logAndProcess(std::move(w));
