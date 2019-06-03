@@ -7,11 +7,63 @@
 #include <algorithm>
 #include <array>
 #include <atomic>
+#include <set>
+#include <string>
 #include <boost/type_index.hpp>
 
 #include "effective_modern_c++_study.h"
 using namespace std;
 
+
+
+int main()
+{
+
+	system("pause");
+}
+
+
+
+#if 0
+item30   196
+
+	logAndAdd(1);
+template<typename T>
+void logAndAdd(T&& name);
+
+template<typename T>
+void logAndAddImpl(T&& name, false_type)
+{
+	cout << "logAndAddImpl false_type" << endl;
+}
+
+string nameFromIdx(int idx)
+{
+	return "yangdian";
+}
+
+void logAndAddImpl(int idx, true_type)
+{
+	cout << "logAndAddImpl true_type" << endl;
+	logAndAdd(nameFromIdx(1));
+}
+
+template<typename T>
+void logAndAdd(T&& name)
+{
+	logAndAddImpl(forward<T>(name), is_integral<T>());
+}
+class Person {
+public:
+	template<typename T>
+	explicit Person(T&& n)
+		: name(std::forward<T>(n)) {}
+
+	explicit Person(int idx)
+		: name(nameFromIdx(idx)) {}
+private:
+	std::string name;
+};
 class Widget {
 public:
 	Widget(Widget&& rhs)
@@ -23,17 +75,6 @@ private:
 	std::string name;
 	std::shared_ptr<> p;
 };
-
-int main()
-{
-	system("pause");
-}
-
-
-
-#if 0
-item26  170 
-
 auto timeFuncInvocation = 
 [](auto&& func, auto&&... params)
 {
