@@ -19,17 +19,16 @@
 #include <cstdlib>
 #include <functional>
 #include <numeric>
+#include <thread>
+#include <mutex>
+#include <atomic>
+#include <condition_variable>
 
 using namespace std;
-
-using FilterContainer = std::vector<std::function<bool(int)>>;
-FilterContainer filters;
 
 
 int main()
 {
-
-	filters.emplace_back([](int value) {return value % 5 == 0; });
 
 	system("pause");
 	return 0;
@@ -38,6 +37,160 @@ int main()
 
 
 #if 0
+std::mutex mtx;
+std::condition_variable_any cv;
+
+int cargo = 0;
+bool shipment_available() { return cargo != 0; }
+
+void consume(int n) {
+	for (int i = 0; i < n; ++i) {
+		mtx.lock();
+		cv.wait(mtx, shipment_available);
+		std::cout << cargo << '\n';
+		cargo = 0;
+		mtx.unlock();
+	}
+}
+
+
+
+	std::thread consumer_thread(consume, 10);
+
+	for (int i = 0; i < 10; ++i) {
+		while (shipment_available()) std::this_thread::yield();
+		mtx.lock();
+		cargo = i + 1;
+		cv.notify_one();
+		mtx.unlock();
+	}
+	consumer_thread.join();
+
+
+condition_variable cv;
+mutex mtx;
+
+void thread_1()
+{
+	unique_lock<mutex> ulock(mtx);
+	cv.wait(ulock);
+	cout << "hello from thread_1" << endl;
+}
+
+thread t1(thread_1);
+cout << "main" << endl;
+this_thread::sleep_for(chrono::seconds(1));
+cv.notify_one();
+t1.join();
+
+	thread threads[10];
+
+	for (int i = 0; i < 10; ++i)
+		threads[i] = thread(test);
+
+	for (auto& th : threads)
+		th.join();
+
+class object
+{
+public:
+	static class object* pObject;
+
+	static object* create_new_object()
+	{
+		std::call_once(oc, [&]() {pObject = new object(); });
+		return pObject;
+	}
+	
+	void print_num()
+	{
+		cout << m_num << endl;
+	}
+
+private:
+	static std::once_flag oc;
+	static std::atomic<int> m_a_num;
+	int m_num = 0;
+	object() 
+	{ 
+		m_num = m_a_num; 
+		m_a_num++; 
+		std::cout << "object()" << std::endl; 
+	}
+	~object() {}
+};
+std::once_flag object::oc;
+std::atomic<int> object::m_a_num{ 100 };
+class object* object::pObject = nullptr;
+
+void test()
+{
+	object* pGlobal = object::create_new_object();
+	pGlobal->print_num();
+}
+
+
+
+timed_mutex mtx;
+void fireworks() {
+	while (!mtx.try_lock_for(std::chrono::microseconds(200))) {
+		cout << "_";
+	}
+	this_thread::sleep_for(std::chrono::microseconds(1000));
+	cout << "\n";
+	mtx.unlock();
+}
+
+class thread_c
+{
+public:
+	void thread_1(int a)
+	{
+		cout << "hello from class member function:" << a << endl;
+	}
+};
+
+thread_c a;
+thread t1(&thread_c::thread_1, a, 1);
+t1.join();
+this_thread::sleep_for(chrono::seconds(2));
+
+
+
+	vector<std::thread> threads;
+	for (int i = 0; i < 5; ++i) {
+		threads.push_back(std::thread([]() {cout << "Hello from thread" << std::this_thread::get_id() << std::endl; }));
+	}
+	for (auto& thread : threads) {
+		thread.join();
+	}
+
+
+	thread_c c;
+	thread t(c);
+	this_thread::sleep_for(chrono::seconds(1));
+
+
+	std::thread t1(hello, 1);
+class thread_c
+{
+public:
+	void operator()()
+	{
+		cout << "hello from class member function" << endl;
+	}
+};
+	t1.join();
+
+void hello(int i) {
+	cout << "Hello from thread:" << i << endl;
+}
+
+
+
+	filters.emplace_back([](int value) {return value % 5 == 0; });
+using FilterContainer = std::vector<std::function<bool(int)>>;
+FilterContainer filters;
 	cout << R"(hello, \n
 			world)" << endl;
 char utf8[] = u8"\u4F60\u597D\u554A";

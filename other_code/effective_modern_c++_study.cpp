@@ -14,14 +14,28 @@
 #include "effective_modern_c++_study.h"
 using namespace std;
 
-template<typename... Ts>
-void fwd(Ts&&... params)
+
+void normalize(int& x)
 {
-	f(std::forward<Ts>(params)...);
+	cout << "normalize int&" << endl;
 }
+
+void normalize(int&& x)
+{
+	cout << "normalize int &&" << endl;
+}
+
 
 int main()
 {
+	auto f = [](auto&& x)
+	{ return normalize(std::forward<decltype(x)>(x)); };
+	int x = 1;
+	f(1);
+	f(x);
+	f(move(x));
+
+
 
 	system("pause");
 }
@@ -29,7 +43,27 @@ int main()
 
 
 #if 0
-item30   196
+item33  216
+	int num = 0;
+	auto func = [num = num]() {};
+
+	auto pw = std::make_unique<Widget>();
+	auto func1 = [pw = move(pw)]() {};
+
+	auto func2 = [pw = std::make_unique<Widget>()](){};
+
+	std::vector<double> data;
+	//auto func3 = [data = std::move(data)]() {};
+
+	data.push_back(0.22);
+
+	auto func4 = std::bind([](std::vector<double>& data) mutable { data.push_back(0.33); }, std::move(data));
+	func4();
+template<typename... Ts>
+void fwd(Ts&&... params)
+{
+f(std::forward<Ts>(params)...);
+}
 
 	logAndAdd(1);
 template<typename T>
