@@ -9,11 +9,103 @@
 #include <atomic>
 #include <set>
 #include <string>
+#include <future>
 #include <boost/type_index.hpp>
 
 #include "effective_modern_c++_study.h"
 using namespace std;
+using namespace std::literals;
 
+
+int main()
+{
+	{
+
+		std::thread t([]() {std::cout << "thread start..." << std::endl; });
+		t.detach();
+	}
+	std::this_thread::sleep_for(1s);
+
+	system("pause");
+}
+
+
+
+#if 0
+item33  216
+template<typename F, typename... Ts>
+inline std::future<typename std::result_of<F(Ts...)>::type>
+reallyAsync(F&& f, Ts&&... params)
+{
+	return std::async(std::launch::async,
+		std::forward<F>(f),
+		std::forward<Ts>(params)...);
+}
+
+
+template<typename F, typename... Ts>
+inline auto reallyAsync_2(F&& f, Ts&&... params)
+{
+	return std::async(std::launch::async,
+		std::forward<F>(f),
+		std::forward<Ts>(params)...);
+}
+void f()
+{
+	std::this_thread::sleep_for(1s);
+}
+
+	auto fut = std::async(f);
+	if (fut.wait_for(0s) == std::future_status::deferred)
+	{
+		std::cout << "deferred" << endl;
+	}
+	else {
+		while (fut.wait_for(100ms) !=
+			std::future_status::ready);
+	}
+
+	std::cout << "end..." << std::endl;
+	
+
+	std::cout << std::this_thread::get_id() << std::endl;
+	std::future<int> f1 = std::async(std::launch::async, []() {
+		std::cout << std::this_thread::get_id() << std::endl;
+		return 8;
+	});
+
+	std::cout << f1.get() << std::endl;
+
+	std::future<void> f2 = std::async(std::launch::async, []() {
+		std::cout << std::this_thread::get_id() << std::endl;
+		std::cout << 8 << std::endl;
+	});
+	f2.wait();
+
+	std::future<int> future = std::async(std::launch::async, []() {
+		std::cout << std::this_thread::get_id() << std::endl;
+		std::this_thread::sleep_for(std::chrono::seconds(3));
+		return 8;
+	});
+
+	std::cout << "waiting...\n";
+
+	std::future_status status;
+	std::this_thread::sleep_for(std::chrono::seconds(3));
+	do {
+		status = future.wait_for(std::chrono::seconds(1));
+		if (status == std::future_status::deferred) {
+			std::cout << "deferred\n";
+		}
+		else if (status == std::future_status::timeout) {
+			std::cout << "timeout\n";
+		}
+		else if (status == std::future_status::ready) {
+			std::cout << "ready\n";
+		}
+	} while (status != std::future_status::ready);
+
+	std::cout << "result is " << future.get() << '\n';
 
 void normalize(int& x)
 {
@@ -25,25 +117,12 @@ void normalize(int&& x)
 	cout << "normalize int &&" << endl;
 }
 
-
-int main()
-{
 	auto f = [](auto&& x)
 	{ return normalize(std::forward<decltype(x)>(x)); };
 	int x = 1;
 	f(1);
 	f(x);
 	f(move(x));
-
-
-
-	system("pause");
-}
-
-
-
-#if 0
-item33  216
 	int num = 0;
 	auto func = [num = num]() {};
 
