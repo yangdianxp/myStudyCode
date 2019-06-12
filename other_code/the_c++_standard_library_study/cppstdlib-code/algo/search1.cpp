@@ -40,4 +40,5 @@ int main()
         pos = search (pos, coll.end(),                  // range
                       subcoll.begin(), subcoll.end());  // subrange
     }
+	system("pause");
 }

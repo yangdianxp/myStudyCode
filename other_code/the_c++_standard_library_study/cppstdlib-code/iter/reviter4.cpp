@@ -39,4 +39,5 @@ int main()
 
     // print value of the element to which the normal iterator refers
     cout << "rrpos: " << *rrpos << endl;
+	system("pause");
 }

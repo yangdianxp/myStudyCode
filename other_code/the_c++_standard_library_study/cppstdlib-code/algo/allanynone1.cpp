@@ -31,4 +31,5 @@ int main()
          << any_of(coll.cbegin(),coll.cend(), isEven) << endl;
     cout << "none even?: "
          << none_of(coll.cbegin(),coll.cend(), isEven) << endl;
+	system("pause");
 }

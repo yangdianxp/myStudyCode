@@ -47,4 +47,5 @@ int main()
     for_each (rpos2, rpos1,   // range
               print);         // operation
     cout << endl;
+	system("pause");
 }

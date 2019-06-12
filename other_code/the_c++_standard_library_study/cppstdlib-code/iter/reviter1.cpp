@@ -32,4 +32,5 @@ int main()
     for_each (coll.rbegin(), coll.rend(),    // range
               print);                        // operations
     cout << endl;
+	system("pause");
 }

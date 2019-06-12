@@ -36,4 +36,5 @@ int main()
     else {
         cout << "5 not found" << endl;
     }
+	system("pause");
 }

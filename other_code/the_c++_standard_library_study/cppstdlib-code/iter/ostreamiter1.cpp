@@ -39,4 +39,6 @@ int main()
     copy (coll.cbegin(), coll.cend(),
           ostream_iterator<int>(cout," < "));
     cout << endl;
+
+	system("pause");
 }
