@@ -53,5 +53,6 @@ int main (int argc, char* argv[])
 
         // print filename and temporary name
         cout << filename << " => " << tmpname << endl;
-    }
+	}
+	system("pause");
 }

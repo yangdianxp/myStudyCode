@@ -51,4 +51,5 @@ int main()
                       checkEvenArgs, checkEvenArgs+3, // subr. values
                       checkEven);                     // subr. criterion
     }
+	system("pause");
 }

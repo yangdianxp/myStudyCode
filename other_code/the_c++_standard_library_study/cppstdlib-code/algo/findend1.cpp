@@ -42,4 +42,7 @@ int main()
         pos = find_end (coll.begin(), end,               // range
                         subcoll.begin(), subcoll.end()); // subrange
     }
+
+
+	system("pause");
 }
