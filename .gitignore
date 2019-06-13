@@ -9,3 +9,6 @@ block
 *.db
 .vs/
 vsproject/
+Debug/   
+packages/    
+packages.config
