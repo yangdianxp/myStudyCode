@@ -27,4 +27,5 @@ int main()
         cout << "once again: " << *intReader << endl;
         ++intReader;
     }
+	system("pause");
 }

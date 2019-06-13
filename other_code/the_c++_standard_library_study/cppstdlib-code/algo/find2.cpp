@@ -44,4 +44,5 @@ int main()
     pos = find_if_not (coll.begin(), coll.end(),
                        bind(less<int>(),_1,5));
     cout << "first value >=5: " << *pos << endl;
+	system("pause");
 }

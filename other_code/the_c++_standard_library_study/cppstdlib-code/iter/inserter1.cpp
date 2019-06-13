@@ -51,4 +51,5 @@ int main()
           inserter(coll2,++coll2.begin()));   // destination
 
     PRINT_ELEMENTS(coll2,"list: ");
+	system("pause");
 }

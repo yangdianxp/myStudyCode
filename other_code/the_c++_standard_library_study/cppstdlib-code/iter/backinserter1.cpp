@@ -42,4 +42,5 @@ int main()
     copy (coll.begin(), coll.end(),    // source
           back_inserter(coll));        // destination
     PRINT_ELEMENTS(coll);
+	system("pause");
 }

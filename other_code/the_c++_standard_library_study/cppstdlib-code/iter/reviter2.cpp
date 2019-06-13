@@ -32,4 +32,5 @@ int main()
 
     // print value to which reverse iterator rpos refers
     cout << "rpos: " << *rpos << endl;
+	system("pause");
 }

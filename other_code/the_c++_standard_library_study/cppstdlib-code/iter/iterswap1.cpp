@@ -35,4 +35,5 @@ int main()
     iter_swap (coll.begin(), prev(coll.end()));
 
     PRINT_ELEMENTS(coll);
+	system("pause");
 }

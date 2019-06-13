@@ -54,4 +54,5 @@ int main()
        cout << "no four consecutive elements with value > 3 found";
    }
    cout << endl;
+   system("pause");
 }

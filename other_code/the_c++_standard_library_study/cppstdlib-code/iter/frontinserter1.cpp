@@ -20,7 +20,8 @@ int main()
 
     // create front inserter for coll
     // - inconvenient way
-    front_insert_iterator<list<int> > iter(coll);
+    //front_insert_iterator<list<int> > iter(coll);
+	auto iter = front_inserter(coll);
 
     // insert elements with the usual iterator interface
     *iter = 1;
@@ -39,8 +40,12 @@ int main()
     PRINT_ELEMENTS(coll);
 
     // use front inserter to insert all elements again
-    copy (coll.begin(), coll.end(),    // source
-          front_inserter(coll));       // destination
+    // copy (coll.begin(), coll.end(),    // source
+    //      front_inserter(coll));       // destination
+	copy (coll.begin(), coll.end(),    // source
+		front_insert_iterator<list<int> >(coll));       // destination
+
 
     PRINT_ELEMENTS(coll);
+	system("pause");
 }
