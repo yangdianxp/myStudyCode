@@ -122,7 +122,8 @@ docker pull yangdianxp/redis:20190531
 docker run -v /home/yd/redis_data:/data -p 8888:6379 -d yangdianxp/redis:20190531 --appendonly yes
 redis-cli -h 192.168.0.212 -p 8888
 
-
+ubuntu运行：
+docker run -it yangdianxp/ubuntu:20190531 /bin/bash
 
 
 

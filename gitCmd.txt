@@ -42,6 +42,7 @@ git merge dev
 git branch -d dev
 git log --graph --pretty=oneline --abbrev-commit
 git clone address
+git clone https://github.com/bitcoin/bitcoin.git "~/bitcoinsource"  下载源码到指定目录
 git clone -o booyah //默认的远程分支名字将会是 booyah/master
 git status //确定哪些文件当前处于什么状态
 git diff //查看具体修改，比较工作目录中当前文件和暂存区域快照之间的差异
