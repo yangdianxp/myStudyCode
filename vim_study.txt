@@ -371,6 +371,9 @@ vimgrep:
 :grep "" #  查找交换文件
 :grep "" ## 查找vim一次性打开的所有文件，:e 再打开的无效
 
+同时搜索多个字符串
+grep -E "13644263032.*KKBToHSBSendTransApi.cpp" ##
+
 
 Vim配置
 1. 设置选项 
