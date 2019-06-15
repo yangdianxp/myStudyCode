@@ -38,4 +38,5 @@ int main()
                          }),
                coll.end());
     PRINT_ELEMENTS(coll,"<4 removed:         ");
+	system("pause");
 }

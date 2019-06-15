@@ -42,4 +42,5 @@ int main()
                     },
                     0);                              // new value
     cout << endl;
+	system("pause");
 }
