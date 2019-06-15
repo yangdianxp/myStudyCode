@@ -49,4 +49,5 @@ int main()
     if (pos != coll2.end()) {
         cout << "first unsorted name: " << pos->second << endl;
     }
+	system("pause");
 }

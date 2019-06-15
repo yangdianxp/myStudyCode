@@ -53,4 +53,15 @@ int main()
     // print all collections again
     for_each (cc.cbegin(), cc.cend(),
               printCollection);
+
+	unordered_map<int, int> m1, m2;
+	m1.insert(make_pair(8, 4));
+	m1.insert(make_pair(8, 7));
+	m2.insert(make_pair(7, 5));
+	m2.insert(make_pair(8, 7));
+	cout << lexicographical_compare(m1.begin(), m1.end(), m2.begin(), m2.end()) << endl;
+
+
+
+	system("pause");
 }

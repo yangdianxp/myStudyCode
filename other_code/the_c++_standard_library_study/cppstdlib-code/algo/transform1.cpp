@@ -39,4 +39,5 @@ int main()
                    return -elem;
                });
     cout << endl;
+	system("pause");
 }

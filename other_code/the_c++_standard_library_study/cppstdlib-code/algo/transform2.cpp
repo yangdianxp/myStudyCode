@@ -41,4 +41,5 @@ int main()
                ostream_iterator<int>(cout, " "), // destination range
                minus<int>());                    // operation
     cout << endl;
+	system("pause");
 }

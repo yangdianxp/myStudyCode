@@ -45,4 +45,5 @@ int main()
     fill (++pos1, --pos2,              // destination
           "hmmm");                     // new value
     PRINT_ELEMENTS(coll,"coll: ");
+	system("pause");
 }

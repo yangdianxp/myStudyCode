@@ -9,6 +9,7 @@
  * warranty, and with no claim as to its suitability for any purpose.
  */
 #include <cstdlib>
+#include <time.h>
 #include "algostuff.hpp"
 using namespace std;
 
@@ -26,4 +27,11 @@ int main()
     generate (coll.begin(), coll.end(),   // destination range
               rand);                      // new value generator
     PRINT_ELEMENTS(coll);
+
+	srand(static_cast<unsigned int>(time(nullptr)));
+	vector<int> col2;
+	generate_n(back_inserter(col2), 10000, rand);
+	PRINT_ELEMENTS(col2);
+
+	system("pause");
 }

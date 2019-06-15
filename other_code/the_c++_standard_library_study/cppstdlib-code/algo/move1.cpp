@@ -40,4 +40,5 @@ int main()
     move (coll2.cbegin(), coll2.cend(),         // source range
           ostream_iterator<string>(cout," "));  // destination range
     cout << endl;
+	system("pause");
 }

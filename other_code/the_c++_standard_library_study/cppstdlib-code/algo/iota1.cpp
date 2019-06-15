@@ -19,4 +19,6 @@ int main()
           42);                       // start value
 
     PRINT_ELEMENTS(coll,"coll: ");
+
+	system("pause");
 }

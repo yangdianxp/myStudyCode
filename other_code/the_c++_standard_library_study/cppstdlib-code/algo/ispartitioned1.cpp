@@ -34,4 +34,5 @@ int main()
     else {
         cout << "coll is not partitioned" << endl;
     }
+	system("pause");
 }

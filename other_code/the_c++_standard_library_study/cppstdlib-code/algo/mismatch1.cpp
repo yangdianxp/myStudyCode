@@ -44,4 +44,5 @@ int main()
              << *values.first << " and "
              << *values.second << endl;
     }
+	system("pause");
 }

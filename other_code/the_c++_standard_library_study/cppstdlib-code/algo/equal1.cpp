@@ -45,4 +45,5 @@ int main()
     else {
         cout << "even and odd elements do not correspond" << endl;
     }
+	system("pause");
 }

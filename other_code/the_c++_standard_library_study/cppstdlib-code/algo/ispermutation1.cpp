@@ -48,4 +48,5 @@ int main()
     else {
         cout << "numbers of even and odd elements don't match" << endl;
     }
+	system("pause");
 }

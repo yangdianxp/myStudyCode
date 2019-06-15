@@ -19,4 +19,5 @@ int main()
     copy (istream_iterator<string>(cin),         // beginning of source
           istream_iterator<string>(),            // end of source
           ostream_iterator<string>(cout,"\n"));  // destination
+	system("pause");
 }
