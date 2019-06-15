@@ -50,5 +50,6 @@ int main()
         cout << "substring \"" << g << "\" found at index "
              << pos - s.cbegin() << endl;
     }
+	system("pause");
 }
 

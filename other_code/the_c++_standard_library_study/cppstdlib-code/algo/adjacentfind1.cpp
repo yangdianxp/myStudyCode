@@ -51,4 +51,5 @@ int main()
             << distance(coll.begin(),pos) + 1
             << endl;
    }
+   system("pause");
 }

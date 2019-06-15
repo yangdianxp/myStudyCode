@@ -20,6 +20,7 @@ int main()
     std::cout << std::stoi ("  77") << std::endl;
     std::cout << std::stod ("  77.7") << std::endl;
     std::cout << std::stoi ("-0x77") << std::endl;
+	// std::cout << std::stoi("99999999999") << std::endl;
 
     // use index of characters not processed
     std::size_t idx;
@@ -42,4 +43,5 @@ int main()
   catch (const std::exception& e) {
     std::cout << e.what() << std::endl;
   }
+  system("pause");
 }

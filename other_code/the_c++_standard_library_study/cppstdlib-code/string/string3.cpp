@@ -34,4 +34,6 @@ int main()
     // process input
     // - here: write it to the standard output
     cout << input;
+
+	system("pause");
 }

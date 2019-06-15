@@ -9,8 +9,7 @@ int main()
 
 #if 0
 迭代器看到  467页
-算法看到539  
-看string  663 
+算法看到  542
 
 	int array[] = { 1, 2, 3, 4, 5 };
 	long sum = 0;

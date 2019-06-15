@@ -38,8 +38,15 @@ int main()
     // remove adjacent duplicates
     // - unique() reorders and returns new end
     // - erase() shrinks accordingly
-    s.erase (unique(s.begin(),
-                    s.end()),
-             s.end());
-    cout << "no duplicates: " << s << endl;
+
+    //s.erase (unique(s.begin(),
+    //                s.end()),
+    //         s.end());
+    //cout << "no duplicates: " << s << endl;
+
+	cout << unique(s.begin(), s.end()) - s.begin() << endl;
+	cout << s << endl;
+	
+
+	system("pause");
 }

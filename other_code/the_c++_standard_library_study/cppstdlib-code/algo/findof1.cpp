@@ -39,4 +39,5 @@ int main()
     cout << "last element of searchcoll in coll is element "
          << distance(coll.begin(),rpos.base())
          << endl;
+	system("pause");
 }
