@@ -38,4 +38,5 @@ int main()
                 ostream_iterator<int>(cout," "),   // destination
                 differenceOne);                    // duplicates criterion
     cout << endl;
+	system("pause");
 }

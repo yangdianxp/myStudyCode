@@ -38,4 +38,5 @@ int main()
    cout << "first odd element: " << *pos1 << endl;
    PRINT_ELEMENTS(coll2,"coll2: ");
    cout << "first odd element: " << *pos2 << endl;
+   system("pause");
 }

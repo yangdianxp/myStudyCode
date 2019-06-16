@@ -38,4 +38,5 @@ int main()
                   coll.end(),        // end of sorted range
                   coll.end());       // end of full range
     PRINT_ELEMENTS(coll);
+	system("pause");
 }

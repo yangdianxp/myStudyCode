@@ -29,4 +29,5 @@ int main()
                 istream_iterator<char>(),     // end of source: end-of-file
                 ostream_iterator<char>(cout), // destination: cout
                 bothSpaces);                  // duplicate criterion
+	system("pause");
 }

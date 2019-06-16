@@ -41,4 +41,13 @@ int main()
                 coll.cend(),                      // end of source
                 ostream_iterator<int>(cout," ")); // destination
     cout << endl;
+
+	cout << "============================" << endl;
+
+	for (auto it = coll.cbegin(); it != coll.cend(); ++it)
+	{
+		rotate_copy(coll.cbegin(), it, coll.cend(), ostream_iterator<int>(cout, " "));
+		cout << endl;
+	}
+	system("pause");
 }

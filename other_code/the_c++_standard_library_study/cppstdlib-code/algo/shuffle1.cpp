@@ -9,6 +9,7 @@
  * warranty, and with no claim as to its suitability for any purpose.
  */
 #include <cstdlib>
+#include <random>
 #include "algostuff.hpp"
 using namespace std;
 
@@ -29,9 +30,12 @@ int main()
     PRINT_ELEMENTS(coll,"sorted:   ");
 
     // shuffle elements with default engine
-    default_random_engine dre;
+    //default_random_engine dre;
+	std::random_device rd;
+	std::mt19937 g(rd());
     shuffle (coll.begin(), coll.end(),  // range
-             dre);                      // random-number generator
+			g);                      // random-number generator
 
     PRINT_ELEMENTS(coll,"shuffled: ");
+	system("pause");
 }

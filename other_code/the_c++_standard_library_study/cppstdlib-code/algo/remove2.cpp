@@ -40,4 +40,5 @@ int main()
                    inserter(coll2,coll2.end()),     // destination
                    bind(less<int>(),_1,4));         // elements NOT copied
     PRINT_ELEMENTS(coll2);
+	system("pause");
 }

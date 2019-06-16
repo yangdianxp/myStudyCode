@@ -30,4 +30,5 @@ int main()
 
    PRINT_ELEMENTS(evenColl,"evenColl: ");
    PRINT_ELEMENTS(oddColl, "oddColl:  ");
+   system("pause");
 }

@@ -42,4 +42,5 @@ int main()
     copy (coll30.cbegin(), pos30,
           ostream_iterator<int>(cout," "));
     cout << endl;
+	system("pause");
 }

@@ -30,4 +30,5 @@ int main()
     reverse_copy (coll.cbegin(), coll.cend(),         // source
                   ostream_iterator<int>(cout," "));   // destination
     cout << endl;
+	system("pause");
 }

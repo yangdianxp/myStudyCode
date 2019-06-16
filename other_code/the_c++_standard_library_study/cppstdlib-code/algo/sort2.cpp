@@ -34,4 +34,5 @@ int main()
 
     PRINT_ELEMENTS(coll1,"\nwith sort():\n ");
     PRINT_ELEMENTS(coll2,"\nwith stable_sort():\n ");
+	system("pause");
 }

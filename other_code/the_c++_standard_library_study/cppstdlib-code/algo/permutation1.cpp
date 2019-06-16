@@ -38,4 +38,12 @@ int main()
         PRINT_ELEMENTS(coll," ");
     }
     PRINT_ELEMENTS(coll,"afterward: ");
+
+	/*coll.push_back(3);
+	coll.push_back(2);
+	coll.push_back(1);
+	PRINT_ELEMENTS(coll, "on entry: ");
+	cout << next_permutation(coll.begin(), coll.end()) << endl;
+	PRINT_ELEMENTS(coll, "afterward: ");*/
+	system("pause");
 }

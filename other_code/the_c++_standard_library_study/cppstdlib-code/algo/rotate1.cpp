@@ -35,4 +35,5 @@ int main()
             find(coll.begin(),coll.end(),4),  // new first element
             coll.end());                      // end of range
     PRINT_ELEMENTS(coll,"4 first:   ");
+	system("pause");
 }

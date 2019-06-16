@@ -42,4 +42,5 @@ int main()
                         greater<int>()),
                 coll.end());
     PRINT_ELEMENTS(coll);
+	system("pause");
 }
