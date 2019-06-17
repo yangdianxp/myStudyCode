@@ -53,4 +53,5 @@ int main()
     copy (coll.cbegin(), coll.cbegin()+4,
           ostream_iterator<int>(cout," "));
     cout << endl;
+	system("pause");
 }

@@ -43,4 +43,5 @@ int main()
                         0,                           // initial value
                         multiplies<int>())           // operation
          << endl;
+	system("pause");
 }

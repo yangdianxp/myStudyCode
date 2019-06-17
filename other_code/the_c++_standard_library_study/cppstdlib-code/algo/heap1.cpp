@@ -35,6 +35,10 @@ int main()
     // push new element into the heap
     coll.push_back (17);
     push_heap (coll.begin(), coll.end());
+	PRINT_ELEMENTS(coll, "after push_heap():  ");
+
+	coll.push_back(1);
+	push_heap(coll.begin(), coll.end());
 
     PRINT_ELEMENTS (coll, "after push_heap():  ");
 
@@ -43,4 +47,5 @@ int main()
     sort_heap (coll.begin(), coll.end());
 
     PRINT_ELEMENTS (coll, "after sort_heap():  ");
+	system("pause");
 }

@@ -30,4 +30,5 @@ int main()
          << " up to "
          << distance(coll.cbegin(),range.second) + 1
          << " without breaking the sorting" << endl;
+	system("pause");
 }

@@ -43,4 +43,5 @@ int main()
                            multiplies<int>(),           // outer operation
                            plus<int>())                 // inner operation
          << endl;
+	system("pause");
 }

@@ -43,4 +43,5 @@ int main()
                  7);
 
     PRINT_ELEMENTS(coll);
+	system("pause");
 }

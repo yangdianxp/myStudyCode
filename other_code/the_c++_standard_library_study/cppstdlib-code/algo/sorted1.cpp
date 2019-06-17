@@ -62,4 +62,5 @@ int main()
                               c2.cbegin(), c2.cend(),
                               ostream_iterator<int>(cout," "));
     cout << endl;
+	system("pause");
 }
