@@ -1,15 +1,30 @@
 #include <iostream>
+#include <unordered_set>
 
+using namespace std;
+
+class Customer
+{
+
+};
+
+std::size_t customer_hash_func(const Customer& c)
+{
+	return 0;
+}
 
 int main()
 {
+	unordered_set<Customer, std::size_t(*)(const Customer&)>
+		custset(20, customer_hash_func);
+
 	system("pause");
 	return 0;
 }
 
 #if 0
 迭代器看到  467页
-算法看到  627
+容器看到  367页
 
 	int array[] = { 1, 2, 3, 4, 5 };
 	long sum = 0;

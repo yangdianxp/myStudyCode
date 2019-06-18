@@ -25,4 +25,6 @@ int main()
     partial_sum (coll.cbegin(), coll.cend(),          // source
                  coll.begin());                       // destination
     PRINT_ELEMENTS(coll,"absolute: ");
+
+	system("pause");
 }

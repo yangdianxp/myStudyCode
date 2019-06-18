@@ -28,4 +28,6 @@ int main()
                  ostream_iterator<int>(cout," "),   // destination
                  multiplies<int>());                // operation
     cout << endl;
+
+	system("pause");
 }
