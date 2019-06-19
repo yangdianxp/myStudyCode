@@ -38,4 +38,6 @@ int main()
     // modify maximum load factor (might cause rehashing)
     dict.max_load_factor(0.7);
     printHashTableState(dict);
+
+	system("pause");
 }

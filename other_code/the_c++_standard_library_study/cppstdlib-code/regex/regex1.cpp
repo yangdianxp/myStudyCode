@@ -56,4 +56,6 @@ int main()
     found = regex_search ("XML tag: <tag>value</tag>", 
                           regex(".*<(.*)>.*</\\1>.*"));    // matches
     out(found);
+
+	system("pause");
 }

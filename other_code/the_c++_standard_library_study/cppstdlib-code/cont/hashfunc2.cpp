@@ -58,4 +58,5 @@ int main()
     custset.insert(Customer("nico","josuttis",42));
     PRINT_ELEMENTS(custset);
 
+	system("pause");
 }

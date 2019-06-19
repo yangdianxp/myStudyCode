@@ -28,4 +28,5 @@ int main()
         coll.erase(pos);
     }
     PRINT_ELEMENTS(coll);
+	system("pause");
 }

@@ -50,4 +50,5 @@ int main()
         }
     }
     PRINT_ELEMENTS(coll);
+	system("pause");
 }

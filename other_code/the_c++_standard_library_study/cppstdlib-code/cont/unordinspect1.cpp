@@ -21,4 +21,5 @@ int main()
     // insert some additional values (might cause rehashing)
     intset.insert({-7,17,33,4});
     printHashTableState(intset);
+	system("pause");
 }
