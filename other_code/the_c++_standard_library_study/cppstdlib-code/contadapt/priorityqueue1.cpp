@@ -41,4 +41,5 @@ int main()
         q.pop();
     }
     cout << endl;
+	system("pause");
 }

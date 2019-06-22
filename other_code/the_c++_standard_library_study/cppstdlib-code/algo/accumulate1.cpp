@@ -43,5 +43,15 @@ int main()
                         0,                           // initial value
                         multiplies<int>())           // operation
          << endl;
+
+	vector<string> vec_str = {"hello", "aaa", "ccc"};
+	string str = accumulate(vec_str.cbegin(), vec_str.cend(), string(""), 
+			[](auto &str_t, auto &str) 
+			{
+				return str_t = str_t + "," + str;
+			}
+	);
+	cout << str << endl;
+
 	system("pause");
 }

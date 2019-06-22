@@ -39,4 +39,5 @@ int main()
                           cout << " tag:   " << m.str(1) << endl;
                           cout << " value: " << m.str(2) << endl;
                       });
+	system("pause");
 }

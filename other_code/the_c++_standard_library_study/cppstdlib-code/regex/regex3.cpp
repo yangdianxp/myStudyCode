@@ -20,15 +20,17 @@ int main()
                   " <last>Josuttis</last>\n"
                   "</person>\n";
 
-    regex reg("<(.*)>(.*)</(\\1)>");
+    regex reg("<(.*)>([\\d\\D]*)</(\\1)>");
 
     // iterate over all matches
     auto pos=data.cbegin();
     auto end=data.cend();
     smatch m;
     for ( ; regex_search(pos,end,m,reg); pos=m.suffix().first) {
+		cout << "m.suffix().str(): " << m.suffix().str() << endl;
         cout << "match:  " << m.str() << endl;
         cout << " tag:   " << m.str(1) << endl;
         cout << " value: " << m.str(2) << endl;
     }
+	system("pause");
 }

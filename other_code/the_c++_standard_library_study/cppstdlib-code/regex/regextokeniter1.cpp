@@ -26,7 +26,7 @@ int main()
     // iterate over all matches (using a regex_token_iterator):
     sregex_token_iterator pos(data.cbegin(),data.cend(), // sequence
                               reg,                       // token separator
-                              {0,2});      // 0: full match, 2: second substring
+							  {0, 1, 2, 3});      // 0: full match, 2: second substring
     sregex_token_iterator end;
     for ( ; pos!=end ; ++pos ) {
         cout << "match:  " << pos->str() << endl;
@@ -42,4 +42,5 @@ int main()
     for ( ; p!=e ; ++p ) {
         cout << "name:  " << *p << endl;
     }
+	system("pause");
 }

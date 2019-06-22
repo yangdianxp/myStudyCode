@@ -51,4 +51,5 @@ int main()
             cout << "(length: " << pos->length() << ")" << endl;
         }
     }
+	system("pause");
 }
