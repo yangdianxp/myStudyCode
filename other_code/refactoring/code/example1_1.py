@@ -25,25 +25,30 @@ invoices = {
     ]
 }
 
+def amountFor(perf, play):
+    thisAmount = 0
+    if play["type"] == "tragedy":
+        thisAmount = 40000
+        if perf["audience"] > 30:
+            thisAmount += 1000 * (perf["audience"] - 30)
+    elif play["type"] == "comedy":
+        thisAmount = 30000
+        if perf["audience"] > 20:
+            thisAmount += 10000 + 500 * (perf["audience"] - 20)
+        thisAmount += 300 * perf["audience"]
+    else:
+        raise NameError("unknown type:{}".format(play["type"]))
+    return thisAmount
+
 def statement (invoices, plays):
     totalAmount = 0;
     volumeCredits = 0;
     result = "Statement for {}\n".format(invoices["customer"])
     for perf in invoices["performances"]:
         play = plays[perf["playID"]]
-        thisAmount = 0
-        if play["type"] == "tragedy":
-            thisAmount = 40000
-            if perf["audience"] > 30:
-                thisAmount += 1000 * (perf["audience"] - 30)
-        elif play["type"] == "comedy":
-            thisAmount = 30000
-            if perf["audience"] > 20:
-                thisAmount += 10000 + 500 * (perf["audience"] - 20)
-            thisAmount += 300 * perf["audience"]
-        else:
-            raise NameError("unknown type:{}".format(play["type"]))
-    
+
+        thisAmount = amountFor(perf, play)
+        
         volumeCredits += max(perf["audience"] - 30, 0)
         if "comedy" == play["type"]:
             volumeCredits += round(perf["audience"] / 5)
