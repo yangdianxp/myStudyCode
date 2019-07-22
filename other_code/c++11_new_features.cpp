@@ -1,34 +1,31 @@
 ﻿#include <iostream>
-#include <iterator>
-#include <string>
-//#include <regex>
-#include <memory>
-#include <vector>
-#include <deque>
-#include <list>
-#include <algorithm>
-#include <map>
-#include <type_traits>
-#include <typeinfo>
-#include <stdexcept>
-#include <cassert>
-//#include <tuple>
-//#include <atomic>
-//#include <thread>
-//#include <windows.h>
-#include <cstdlib>
-#include <functional>
-#include <numeric>
-#include <thread>
-#include <mutex>
-#include <atomic>
-#include <condition_variable>
+#include <boost/exception/all.hpp>
 
 using namespace std;
+using namespace boost;
 
+struct my_err {};  //某个自定义的异常类，未使用boost::exception
 
 int main()
 {
+	try
+	{
+		//使用enable_error_info包装自定义异常
+		throw enable_error_info(my_err()) << errinfo_errno(101)
+			<< errinfo_api_function("fopen");
+	}
+	catch (boost::exception& e) //这里必须使用boost::exception来捕获
+	{
+		cout << diagnostic_information(e) << endl;
+	}
+	try
+	{
+		BOOST_THROW_EXCEPTION(std::logic_error("logic"));//必须是标准异常
+	}
+	catch (boost::exception& e)
+	{
+		cout << diagnostic_information(e) << endl;
+	}
 
 	system("pause");
 	return 0;
@@ -37,6 +34,55 @@ int main()
 
 
 #if 0
+boost::uuids::uuid u;
+u = boost::uuids::random_generator()();
+std::string s = boost::lexical_cast<std::string>(u);
+std::cout << s << std::endl;
+std::cout << to_string(u) << std::endl;
+
+
+std::cout << std::boolalpha;
+
+// any 类型
+std::any a = 1;
+std::cout << a.type().name() << ": " << std::any_cast<int>(a) << '\n';
+a = 3.14;
+std::cout << a.type().name() << ": " << std::any_cast<double>(a) << '\n';
+a = true;
+std::cout << a.type().name() << ": " << std::any_cast<bool>(a) << '\n';
+
+// 有误的转型
+try
+{
+	a = 1;
+	std::cout << std::any_cast<float>(a) << '\n';
+}
+catch (const std::bad_any_cast& e)
+{
+	std::cout << e.what() << '\n';
+}
+
+// 拥有值
+a = 1;
+if (a.has_value())
+{
+	std::cout << a.type().name() << '\n';
+}
+
+// 重置
+a.reset();
+if (!a.has_value())
+{
+	std::cout << "no value\n";
+}
+
+// 指向所含数据的指针
+a = 1;
+int* i = std::any_cast<int>(&a);
+std::cout << *i << "\n";
+
+
+
 std::mutex mtx;
 std::condition_variable_any cv;
 
