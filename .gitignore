@@ -12,3 +12,8 @@ vsproject/
 Debug/   
 packages/    
 packages.config
+*.sln
+*.vcxproj
+*.filters
+*.user
+
