@@ -4,34 +4,62 @@
 using namespace std;
 using namespace boost;
 
-struct my_err {};  //某个自定义的异常类，未使用boost::exception
+class test2
+{
+public:
+	test2(int num) : y(num) {}
+	~test2() {}
+
+	static void testStaticFun()
+	{
+		cout << "testStaticFun" << endl;
+		cout << "x = " << x << endl;
+	}
+
+	void testFun()
+	{
+		testStaticFun();
+	}
+
+private:
+	static int x;
+	int y;
+};
+
+int test2::x = 10;
 
 int main()
 {
-	try
-	{
-		//使用enable_error_info包装自定义异常
-		throw enable_error_info(my_err()) << errinfo_errno(101)
-			<< errinfo_api_function("fopen");
-	}
-	catch (boost::exception& e) //这里必须使用boost::exception来捕获
-	{
-		cout << diagnostic_information(e) << endl;
-	}
-	try
-	{
-		BOOST_THROW_EXCEPTION(std::logic_error("logic"));//必须是标准异常
-	}
-	catch (boost::exception& e)
-	{
-		cout << diagnostic_information(e) << endl;
-	}
+	test2 test(100);
+	test.testFun();
 
 	system("pause");
 	return 0;
 }
 
+#if 0
+struct my_err {};  //某个自定义的异常类，未使用boost::exception
 
+try
+{
+	//使用enable_error_info包装自定义异常
+	throw enable_error_info(my_err()) << errinfo_errno(101)
+		<< errinfo_api_function("fopen");
+}
+catch (boost::exception& e) //这里必须使用boost::exception来捕获
+{
+	cout << diagnostic_information(e) << endl;
+}
+try
+{
+	BOOST_THROW_EXCEPTION(std::logic_error("logic"));//必须是标准异常
+}
+catch (boost::exception& e)
+{
+	cout << diagnostic_information(e) << endl;
+}
+
+#endif
 
 #if 0
 boost::uuids::uuid u;
