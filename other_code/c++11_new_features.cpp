@@ -1,37 +1,16 @@
 ﻿#include <iostream>
+#include <algorithm>
 #include <boost/exception/all.hpp>
 
 using namespace std;
 using namespace boost;
 
-class test2
-{
-public:
-	test2(int num) : y(num) {}
-	~test2() {}
-
-	static void testStaticFun()
-	{
-		cout << "testStaticFun" << endl;
-		cout << "x = " << x << endl;
-	}
-
-	void testFun()
-	{
-		testStaticFun();
-	}
-
-private:
-	static int x;
-	int y;
-};
-
-int test2::x = 10;
-
 int main()
 {
-	test2 test(100);
-	test.testFun();
+	vector<int> vec = { 1, 2, 3, 4, 5 };
+	cout << all_of(vec.begin(), vec.end(), [](int num) { return num > 0; }) << endl;
+	cout << any_of(vec.begin(), vec.end(), [](int num) { return num >= 5; }) << endl;
+	cout << none_of(vec.begin(), vec.end(), [](int num) { return num >= 5; }) << endl;
 
 	system("pause");
 	return 0;
