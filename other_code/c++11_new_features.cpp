@@ -1,19 +1,19 @@
-﻿#include <iostream>
+﻿// 例
+#include <iostream>
+#include <string>
 #include <algorithm>
-#include <boost/exception/all.hpp>
 
-using namespace std;
-using namespace boost;
+std::string mirror_ends(const std::string& in)
+{
+	return std::string(in.begin(),
+		std::mismatch(in.begin(), in.end(), in.rbegin()).first);
+}
 
 int main()
 {
-	vector<int> vec = { 1, 2, 3, 4, 5 };
-	cout << all_of(vec.begin(), vec.end(), [](int num) { return num > 0; }) << endl;
-	cout << any_of(vec.begin(), vec.end(), [](int num) { return num >= 5; }) << endl;
-	cout << none_of(vec.begin(), vec.end(), [](int num) { return num >= 5; }) << endl;
-
-	system("pause");
-	return 0;
+	std::cout << mirror_ends("abXYZba") << '\n'
+		<< mirror_ends("abca") << '\n'
+		<< mirror_ends("aba") << '\n';
 }
 
 #if 0
