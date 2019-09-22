@@ -1,19 +1,32 @@
 ﻿// 例
 #include <iostream>
+#include <tuple>
+#include <complex>
 #include <string>
-#include <algorithm>
 
-std::string mirror_ends(const std::string& in)
-{
-	return std::string(in.begin(),
-		std::mismatch(in.begin(), in.end(), in.rbegin()).first);
-}
+using namespace std;
 
 int main()
 {
-	std::cout << mirror_ends("abXYZba") << '\n'
-		<< mirror_ends("abca") << '\n'
-		<< mirror_ends("aba") << '\n';
+	tuple<string, int, int, complex<double>> t;
+	tuple<int, double, string> t1(41, 6.3, "nico");
+
+	cout << get<0>(t1) << " ";
+	cout << get<1>(t1) << " ";
+	cout << get<2>(t1) << " ";
+	cout << endl;
+
+	auto t2 = make_tuple(22, 44, "nico");
+	get<1>(t1) = get<1>(t2);
+	if (t1 < t2) {
+		cout << "come here" << endl;
+		t1 = t2;
+	}
+
+	cout << get<0>(t1) << " ";
+	cout << get<1>(t1) << " ";
+	cout << get<2>(t1) << " ";
+	cout << endl;
 }
 
 #if 0
