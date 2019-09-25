@@ -1,33 +1,38 @@
 ﻿// 例
 #include <iostream>
-#include <tuple>
-#include <complex>
-#include <string>
+#include <type_traits>
 
 using namespace std;
 
+template <typename T>
+void foo_impl(const T& val, std::true_type)
+{
+	std::cout << "foo() called for pointer to " << *val << endl;
+}
+
+template <typename T>
+void foo_impl(const T& val, std::false_type)
+{
+	std::cout << "foo() called for value to " << val << endl;
+}
+
+template <typename T>
+void foo(const T& val)
+{
+	foo_impl (val, std::is_pointer<T>());
+	//if (is_pointer<T>::value) {
+	//	cout << "foo() called for a pointer" << std::endl;
+	//}
+	//else {
+	//	std::cout << "foo() called for a value" << endl;
+	//}
+}
+
 int main()
 {
-	tuple<string, int, int, complex<double>> t;
-	tuple<int, double, string> t1(41, 6.3, "nico");
-
-	cout << get<0>(t1) << " ";
-	cout << get<1>(t1) << " ";
-	cout << get<2>(t1) << " ";
-	cout << endl;
-
-	auto t2 = make_tuple(22, 44, "nico");
-	get<1>(t1) = get<1>(t2);
-	if (t1 < t2) {
-		cout << "come here" << endl;
-		t1 = t2;
-	}
-
-	cout << get<0>(t1) << " ";
-	cout << get<1>(t1) << " ";
-	cout << get<2>(t1) << " ";
-	cout << endl;
+	foo((int *)0);
 }
+
 
 #if 0
 struct my_err {};  //某个自定义的异常类，未使用boost::exception
