@@ -1,14 +1,18 @@
 ﻿// 例
 #include <iostream>
+#include <map>
 #include <vector>
 using namespace std;
 
+template<typename ... T>
+class variadic_class
+{
+	using type = x<T...>;
+};
+
 int main()
 {
-	int a[]{ 1, 2, 3 };
-	vector<int> v{ 4, 5, 6 };
 
-	
 	system("pause");
 }
 
