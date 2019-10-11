@@ -1,29 +1,14 @@
 ﻿// 例
 #include <iostream>
+#include <vector>
 using namespace std;
-
-void check(int&)
-{
-	cout << "lvalue" << endl;
-}
-
-void check(int&&)
-{
-	cout << "rvalue" << endl;
-}
-
-template<typename T>
-void print(T&& v)
-{
-	check(std::forward<T>(v));
-}
 
 int main()
 {
-	int x = 10;
-	print(x);
-	print(move(x));
+	int a[]{ 1, 2, 3 };
+	vector<int> v{ 4, 5, 6 };
 
+	
 	system("pause");
 }
 
