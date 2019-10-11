@@ -1,36 +1,30 @@
 ﻿// 例
 #include <iostream>
-#include <type_traits>
-
 using namespace std;
 
-template <typename T>
-void foo_impl(const T& val, std::true_type)
+void check(int&)
 {
-	std::cout << "foo() called for pointer to " << *val << endl;
+	cout << "lvalue" << endl;
 }
 
-template <typename T>
-void foo_impl(const T& val, std::false_type)
+void check(int&&)
 {
-	std::cout << "foo() called for value to " << val << endl;
+	cout << "rvalue" << endl;
 }
 
-template <typename T>
-void foo(const T& val)
+template<typename T>
+void print(T&& v)
 {
-	foo_impl (val, std::is_pointer<T>());
-	//if (is_pointer<T>::value) {
-	//	cout << "foo() called for a pointer" << std::endl;
-	//}
-	//else {
-	//	std::cout << "foo() called for a value" << endl;
-	//}
+	check(std::forward<T>(v));
 }
 
 int main()
 {
-	foo((int *)0);
+	int x = 10;
+	print(x);
+	print(move(x));
+
+	system("pause");
 }
 
 
