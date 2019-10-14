@@ -1,17 +1,21 @@
 ﻿// 例
 #include <iostream>
-#include <map>
-#include <vector>
 using namespace std;
 
-template<typename ... T>
-class variadic_class
+template<typename T1, typename T2>
+struct select1st
 {
-	using type = x<T...>;
+	using type = T1;
 };
+
+template<typename T1, typename T2>
+struct forward :
+	select1st<T2, T1>
+{};
 
 int main()
 {
+	
 
 	system("pause");
 }
