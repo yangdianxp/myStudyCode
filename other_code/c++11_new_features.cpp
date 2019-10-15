@@ -1,34 +1,13 @@
 ﻿// 例
-#include <assert.h>
 #include <iostream>
+#include <type_traits>
+#include <deque>
+#include <string>
 using namespace std;
-
-#define mp_arglist template		// 元函数参数列表
-#define mp_arg typename			// 元函数参数声明
-#define mp_function struct		// 元函数定义
-#define mp_data typedef			// 元数据定义
-
-#define mp_return(T) mp_data T type		// 元函数返回
-// define mp_return(T) using type=T		// C++11/14风格的元函数返回
-#define mp_exec(Func) Func::type		// 获取元函数返回结果
 #define mp_eval(Func) Func::value		// 获取元函数返回值
-
-mp_arglist<mp_arg T>
-mp_function demo_func
-{
-	mp_return(const T*);
-};
-
-mp_arglist<mp_arg T>
-mp_function demo_func<T*>
-{
-	mp_return(const T);
-};
 
 int main()
 {
-	assert((is_same<mp_exec(demo_func<int>), const int *>::value));
-	assert((is_same<mp_exec(demo_func<int*>), const int >::value));
 
 	system("pause");
 }
