@@ -1,16 +1,45 @@
 ﻿// 例
+#include <boost/type_traits/has_greater.hpp>
 #include <iostream>
-#include <type_traits>
-#include <deque>
-#include <string>
+
 using namespace std;
-#define mp_eval(Func) Func::value		// 获取元函数返回值
 
-int main()
-{
+#define mp_data typedef			// 元数据定义
+#define mp_exec(Func) Func::type		// 获取元函数返回结果
 
-	system("pause");
+int main() {
+	mp_data mp_exec(add_const<int>) mdata1;   // 添加const修饰
+	static_assert((is_const<mdata1>::value)); // 新元数据是常数类型
+	static_assert((is_same<mdata1, int const>::value));  // 比较相等
+
+	mp_data mp_exec(add_pointer<double>) mdata2;  // 添加指针修饰
+	static_assert((is_pointer<mdata2>::value)); // 新元数据是指针类型
+	static_assert((is_same<mdata2, double*>::value)); // 比较相等
+
+	mp_data mp_exec(add_lvalue_reference<mdata2>) mdata3; // 添加左引用修饰
+	static_assert((is_lvalue_reference<mdata3>::value)); // 新元数据是左引用类型
+	static_assert((is_same<mdata3, double*&>::value)); // 判断是否是指针的引用类型
+	
+	mp_data mp_exec(add_lvalue_reference<void>) mdata4; // 为void添加左引用
+	static_assert((is_void<mdata4>::value)); // 因为void不是对象类型，所以无变化
+
+	return 0;
 }
+
+
+//// 例
+//#include <iostream>
+//#include <type_traits>
+//using namespace std;
+//#define mp_eval(Func) Func::value		// 获取元函数返回值
+//
+//
+//int main()
+//{
+//	cout << mp_eval(has_greater<int>) << endl;
+//
+//	system("pause");
+//}
 
 
 #if 0
