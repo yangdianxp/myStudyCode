@@ -6,7 +6,7 @@ git push [remote] --all //推送所有分支到远程仓库
 git regit push [remote] --allmote add origin git@github.com:yangdianxp/mygit.git
 git remote  //列出每个远程库的简短名字
 git remote -v //显示远程库的地址
-git remote add [shortname] [url]  //
+git remote add [shortname] [url]  //将本地仓库与远程仓库关联
 git remote add pb git://github.com/paulboone/ticgit.git //添加一个新的远程仓库
 git remote show [remote-name]  //查看某个远程仓库的详细信息
 git ls-remote (remote) //来显式地获得远程引用的完整列表
@@ -15,6 +15,7 @@ git remote rm  //删除远程仓库
 git fetch [remote-name]
 git fetch pb //抓取所有 Paul 有的，但本地仓库没有的信息
 git fetch origin //抓取远程仓库中的所有更新，只是将远端的数据接到本地仓库，并不自动合并到当前工作分支，要手工合并
+git fetch origin master:temp  // 将远程分支master拉到本地temp分支
 git pull  //从原始克隆的远端仓库中抓取数据后，合并到工作目录中的当前分支
 git checkout -b dev
 git checkout [file] //恢复暂存区的指定文件到工作区
