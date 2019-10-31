@@ -1,23 +1,18 @@
 ﻿// 例
-#include <boost/type_traits/function_traits.hpp>
 #include <iostream>
+#include <vector>
+#include <boost/assign.hpp>
 
 using namespace std;
-
-#define mp_data typedef			// 元数据定义
+using namespace boost::assign;
 
 int main() {
-	mp_data void(mdata1)(int, std::string);
-	static_assert(is_function<mdata1>::value);
+	vector<int> v1, v2;
+	push_back(v1), 1, 2, 3, 4, 5;
+	std::copy(v1.begin(), v1.end(), back_inserter(v2));
+	std::for_each(v2.begin(), v2.end(), [](auto n) {cout << n << endl; });
 
-	const size_t n = boost::function_traits<mdata1>::arity;  // 获得函数参数数量
-	static_assert(n == 2);
-
-	mp_data boost::function_traits<mdata1>::result_type rtype; // 函数的返回类型
-	static_assert(is_void<rtype>::value);
-
-	mp_data boost::function_traits<mdata1>::arg2_type a2type;  // 第二个参数的类型
-	static_assert(is_same<a2type, std::string>::value);
+	system("pause");
 
 	return 0;
 }
