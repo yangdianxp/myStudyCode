@@ -1,18 +1,19 @@
 ﻿// 例
 #include <iostream>
 #include <vector>
-#include <boost/assign.hpp>
+#include <algorithm>
+#include <boost/range/algorithm.hpp>
 
 using namespace std;
-using namespace boost::assign;
+using namespace boost;
 
 int main() {
-	vector<int> v1, v2;
-	push_back(v1), 1, 2, 3, 4, 5;
-	std::copy(v1.begin(), v1.end(), back_inserter(v2));
-	std::for_each(v2.begin(), v2.end(), [](auto n) {cout << n << endl; });
+	vector<int> v(10);
+	rand48 rnd;
 
-	system("pause");
+	std::sort(
+		std::random_shuffle(
+			std::generate(v, rnd)));
 
 	return 0;
 }
