@@ -1,15 +1,23 @@
 ﻿// 例
 #include <iostream>
+#include <string>
 #include <vector>
-#include <algorithm>
-#include <boost/range/>
+#include <boost/range/algorithm/copy.hpp>
+#include <boost/range/combine.hpp>
 
 using namespace std;
 using namespace boost;
 
 int main() {
-	char a[] = "iterator range";
-	auto r = boost::find_first(a, " ");
+	string str = "abcde";
+	vector<int> v = { 5, 4, 3, 2, 1 };
+	auto r = combine(str, v);
+	for (const auto& x : r)
+	{
+		auto& c = get<0>(x);
+		auto& i = get<1>(x);
+		cout << "(" << c << "," << i << ") ";
+	}
 
 	system("pause");
 	return 0;
