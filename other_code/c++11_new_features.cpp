@@ -2,19 +2,16 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include <boost/range/algorithm.hpp>
+#include <boost/range/>
 
 using namespace std;
 using namespace boost;
 
 int main() {
-	vector<int> v(10);
-	rand48 rnd;
+	char a[] = "iterator range";
+	auto r = boost::find_first(a, " ");
 
-	std::sort(
-		std::random_shuffle(
-			std::generate(v, rnd)));
-
+	system("pause");
 	return 0;
 }
 
