@@ -1,23 +1,19 @@
 ﻿// 例
 #include <iostream>
-#include <string>
 #include <vector>
 #include <boost/range/algorithm/copy.hpp>
-#include <boost/range/combine.hpp>
+#include <boost/range/algorithm/sort.hpp>
+#include <boost/range/adaptors.hpp>
 
 using namespace std;
 using namespace boost;
 
 int main() {
-	string str = "abcde";
-	vector<int> v = { 5, 4, 3, 2, 1 };
-	auto r = combine(str, v);
-	for (const auto& x : r)
-	{
-		auto& c = get<0>(x);
-		auto& i = get<1>(x);
-		cout << "(" << c << "," << i << ") ";
-	}
+	vector<int> v{ 7, 8, 4, 6, 53, 2, 6 };
+	boost::copy(
+		boost::sort(v) | adaptors::uniqued,
+		ostream_iterator<int>(cout, ",")
+	);
 
 	system("pause");
 	return 0;
