@@ -1,19 +1,18 @@
 ﻿// 例
 #include <iostream>
 #include <vector>
-#include <boost/range/algorithm/copy.hpp>
-#include <boost/range/algorithm/sort.hpp>
-#include <boost/range/adaptors.hpp>
+#include <list>
+#include <map>
 
 using namespace std;
-using namespace boost;
 
 int main() {
-	vector<int> v{ 7, 8, 4, 6, 53, 2, 6 };
-	boost::copy(
-		boost::sort(v) | adaptors::uniqued,
-		ostream_iterator<int>(cout, ",")
-	);
+	std::vector<int> a{ 1, 2, 3 };
+	std::vector<int> b{ 13, 14 };
+	
+	std::swap(a, b);
+	cout << a[0] << endl;
+
 
 	system("pause");
 	return 0;
@@ -36,6 +35,29 @@ int main() {
 
 
 #if 0
+	//int a = 10;
+	//std::vector<std::reference_wrapper<int>> coll;
+	//coll.push_back(a);
+	////cout << coll[0] << std::endl;
+	//a = 20;
+	////cout << coll[0] << std::endl;
+	//int b = 30;
+
+	//std::map<std::reference_wrapper<int>, int> coll1;
+	//coll1.insert(std::make_pair(std::ref(a), b));
+	//cout << coll1[a] << endl;
+	//a = 40;
+	//cout << coll1[a] << endl;
+	//cout << coll1.begin()->first << endl;
+
+
+vector<int> v{ 7, 8, 4, 6, 53, 2, 6 };
+boost::copy(
+	boost::sort(v) | adaptors::uniqued,
+	ostream_iterator<int>(cout, ",")
+);
+
+
 struct my_err {};  //某个自定义的异常类，未使用boost::exception
 
 try
