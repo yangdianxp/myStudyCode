@@ -75,7 +75,7 @@ int main(int argc, char** argv)
         // If we get here then the connection is closed gracefully
 
         // The buffers() function helps print a ConstBufferSequence
-        std::cout << boost::beast::buffers(buffer.data()) << std::endl;
+        std::cout << boost::beast::make_printable(buffer.data()) << std::endl;
     }
     catch(std::exception const& e)
     {
