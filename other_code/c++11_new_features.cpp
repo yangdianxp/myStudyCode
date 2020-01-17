@@ -1,37 +1,174 @@
 ﻿// 例
 #include <iostream>
-#include <vector>
-#include <list>
-#include <map>
+#include <string>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
 
-using namespace std;
+std::mutex m;
+std::condition_variable cv;
+std::string data;
+bool ready = false;
+bool processed = false;
+
+void worker_thread()
+{
+	// Wait until main() sends data
+	std::unique_lock<std::mutex> lk(m);
+	cv.wait(lk, [] {return ready; });
+
+	// after the wait, we own the lock.
+	std::cout << "Worker thread is processing data\n";
+	data += " after processing";
+
+	// Send data back to main()
+	processed = true;
+	std::cout << "Worker thread signals data processing completed\n";
+
+	// Manual unlocking is done before notifying, to avoid waking up
+	// the waiting thread only to block again (see notify_one for details)
+	lk.unlock();
+	cv.notify_one();
+}
 
 int main() {
-	std::vector<int> a{ 1, 2, 3 };
-	std::vector<int> b{ 13, 14 };
-	
-	std::swap(a, b);
-	cout << a[0] << endl;
+	std::thread worker(worker_thread);
 
+	data = "Example data";
+	// send data to the worker thread
+	{
+		std::lock_guard<std::mutex> lk(m);
+		ready = true;
+		std::cout << "main() signals data ready for processing\n";
+	}
+	cv.notify_one();
 
-	system("pause");
+	// wait for the worker
+	{
+		std::unique_lock<std::mutex> lk(m);
+		cv.wait(lk, [] {return processed; });
+	}
+	std::cout << "Back in main(), data = " << data << '\n';
+
+	worker.join();
 	return 0;
 }
 
+#if 0
+#include <iostream>
+#include <vector>
+#include <thread>
+#include <mutex>   
+#include <condition_variable>
 
-//// 例
-//#include <iostream>
-//#include <type_traits>
-//using namespace std;
-//#define mp_eval(Func) Func::value		// 获取元函数返回值
-//
-//
-//int main()
-//{
-//	cout << mp_eval(has_greater<int>) << endl;
-//
-//	system("pause");
-//}
+std::mutex mtx;
+std::condition_variable cv;
+bool ready = false;
+
+void print_id(int id) {
+	std::unique_lock<std::mutex> lck(mtx);
+	while (!ready)
+	{
+		cv.wait(lck);
+		std::cout << "thread " << id << " race" << std::endl;
+	}
+	// ...
+	std::cout << "thread " << id << '\n';
+}
+
+void go() {
+	std::unique_lock<std::mutex> lck(mtx);
+	ready = true;
+	cv.notify_all();
+}
+
+int main() {
+	std::vector<std::thread> threads;
+	// spawn 10 threads:
+	for (int i = 0; i < 100; ++i)
+		threads.emplace_back(std::thread(print_id, i));
+
+	std::cout << "10 threads ready to race...\n";
+	go();                       // go!
+
+	for (auto& th : threads)
+		th.join();
+
+	return 0;
+}
+
+#endif
+
+#if 0
+#include <chrono>
+#include <thread>
+#include <iomanip>
+
+using namespace std;
+using namespace std::chrono;
+using namespace std::chrono_literals;
+
+// 3/4 秒一次心跳
+using heartbeats = std::chrono::duration<int, std::ratio<3, 4>>;
+using minutes = std::chrono::duration<double, std::ratio<60> >;
+// 123次心跳
+heartbeats beat(123);
+// 相当于多少分钟
+cout << minutes(beat).count() << endl;
+
+std::chrono::hours hour(1);
+// 一小时多少次心跳
+cout << heartbeats(hour).count() << endl;
+
+std::chrono::seconds s(10);
+std::chrono::minutes m(2);
+// 2 分钟加10秒
+cout << (m + s).count() << endl;
+
+// 方便表示法
+auto day = 24h;
+auto halfhour = 0.5h;
+cout << day.count() << endl;
+cout << halfhour.count() << endl;
+
+// 时间点
+system_clock::time_point today = system_clock::now();
+system_clock::time_point tomorrow = today + hours(24);
+
+
+// 精度高的时间点
+steady_clock::time_point start = steady_clock::now();
+std::this_thread::sleep_for(std::chrono::seconds(2));
+steady_clock::time_point end = steady_clock::now();
+
+// 计算时间差
+auto elapsed = end - start;
+cout << endl << elapsed.count() << endl;
+cout << duration<double>(elapsed).count() << endl; // converts to seconds
+
+// 处理时间字符串
+auto now = system_clock::now();
+time_t t = system_clock::to_time_t(now);
+std::tm tm = *std::localtime(&t);
+auto time = std::put_time(&tm, "%b %d %Y %H:%M:%S");
+cout << time << endl;
+
+std::stringstream ss;
+ss << time;
+ss >> std::get_time(&tm, "%b %d %Y %H:%M:%S");
+auto now2 = std::chrono::system_clock::from_time_t(std::mktime(&tm));
+duration<double> diff = now - now2;
+std::cout << diff.count() << std::endl;
+#endif
+
+
+#if 0
+std::vector<int> a{ 1, 2, 3 };
+std::vector<int> b{ 13, 14 };
+
+std::swap(a, b);
+cout << a[0] << endl;
+#endif
 
 
 #if 0
